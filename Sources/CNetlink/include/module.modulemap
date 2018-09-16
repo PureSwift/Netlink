@@ -1,4 +1,0 @@
-module CNetlink [system] {
-    header "shim.h"
-    export *
-}

@@ -10,13 +10,7 @@ let package = Package(
     name: "Netlink",
     targets: [
         Target(
-            name: "Netlink",
-            dependencies: [
-                .Target(name: "CNetlink")
-            ]
-        ),
-        Target(
-            name: "CNetlink"
+            name: "Netlink"
         ),
         Target(
             name: "NetlinkGeneric",
@@ -33,7 +27,12 @@ let package = Package(
         )
     ],
     dependencies: [
-        .Package(url: "https://github.com/PureSwift/Codable.git", majorVersion: 1)
+        .Package(url: "https://github.com/PureSwift/CNetlink.git", majorVersion: 1)
     ],
     exclude: ["Xcode", "Carthage"]
 )
+
+#if swift(>=3.2)
+#elseif swift(>=3.0)
+package.dependencies.append(.Package(url: "https://github.com/PureSwift/Codable.git", majorVersion: 1))
+#endif
