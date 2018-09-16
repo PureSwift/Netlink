@@ -403,7 +403,7 @@ final class Netlink80211Tests: XCTestCase {
             
             // ssid name
             let ssidLength = min(Int(value.bss.informationElements[1]), 32)
-            XCTAssertEqual(String(data: value.bss.informationElements[2 ..< 2 + ssidLength], encoding: .utf8), "COLEMANCDA")
+            XCTAssertEqual(String(data: Data(value.bss.informationElements[Range(2 ..< 2 + ssidLength)]), encoding: .utf8), "COLEMANCDA")
         }
             
         catch { XCTFail("Could not decode: \(error)"); return }
