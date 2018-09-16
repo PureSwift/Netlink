@@ -13,11 +13,12 @@ import Darwin.C
 
 import Foundation
 import CNetlink
+import Netlink
 
 /// Netlink generic message payload.
 public struct NetlinkGenericMessage: NetlinkMessageProtocol {
     
-    internal static let headerLength = NetlinkMessageHeader.length + 4
+    internal static let headerLength = MemoryLayout<nlmsghdr>.size + 4
     
     // MARK: - Properties
     

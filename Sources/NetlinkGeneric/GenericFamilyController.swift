@@ -7,6 +7,7 @@
 
 import Foundation
 import CNetlink
+import Netlink
 
 #if swift(>=3.2)
 #elseif swift(>=3.0)

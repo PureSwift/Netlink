@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CNetlink
+import Netlink
 
 #if swift(>=3.2)
 #elseif swift(>=3.0)
@@ -52,5 +52,20 @@ extension NetlinkGenericMulticastGroupIdentifier: Codable {
         var container = encoder.singleValueContainer()
         
         try container.encode(rawValue)
+    }
+}
+
+// MARK: - Socket
+
+public extension NetlinkSocket {
+    
+    public func subscribe(to group: NetlinkGenericMulticastGroupIdentifier) throws {
+        
+        try addMembership(to: group.rawValue)
+    }
+    
+    public func unsubscribe(from group: NetlinkGenericMulticastGroupIdentifier) throws {
+        
+        try removeMembership(from: group.rawValue)
     }
 }

@@ -5,14 +5,7 @@
 //  Created by Alsey Coleman Miller on 7/7/18.
 //
 
-#if os(Linux)
-import Glibc
-#elseif os(macOS) || os(iOS)
-import Darwin.C
-#endif
-
 import Foundation
-import CNetlink
 
 #if swift(>=3.2)
 #elseif swift(>=3.0)
@@ -59,11 +52,4 @@ extension NetlinkGenericFamilyName: Codable {
         
         try container.encode(rawValue)
     }
-}
-
-// MARK: - Static Members
-
-public extension NetlinkGenericFamilyName {
-    
-    public static let nl80211 = NetlinkGenericFamilyName(rawValue: NL80211_GENL_NAME)
 }

@@ -9,6 +9,8 @@ import Foundation
 import XCTest
 import CNetlink
 @testable import Netlink
+@testable import NetlinkGeneric
+@testable import Netlink80211
 
 final class NL80211Tests: XCTestCase {
     

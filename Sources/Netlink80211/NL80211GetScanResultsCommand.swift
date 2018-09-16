@@ -1,20 +1,22 @@
 //
-//  NL80211TriggerScanCommand.swift
+//  NL80211GetScanResultsCommand.swift
 //  Netlink
 //
-//  Created by Alsey Coleman Miller on 7/29/18.
+//  Created by Alsey Coleman Miller on 7/28/18.
 //
 
 import Foundation
+import Netlink
+import NetlinkGeneric
 
 #if swift(>=3.2)
 #elseif swift(>=3.0)
     import Codable
 #endif
 
-public struct NL80211TriggerScanCommand {
+public struct NL80211GetScanResultsCommand {
     
-    public static let command = NetlinkGenericCommand.NL80211.triggerScan
+    public static let command = NetlinkGenericCommand.NL80211.getScan
     
     public static let version: NetlinkGenericVersion = 0
     
@@ -26,7 +28,7 @@ public struct NL80211TriggerScanCommand {
     }
 }
 
-extension NL80211TriggerScanCommand: Codable {
+extension NL80211GetScanResultsCommand: Codable {
     
     internal enum CodingKeys: String, NetlinkAttributeCodingKey {
         

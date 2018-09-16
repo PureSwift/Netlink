@@ -12,10 +12,24 @@ let package = Package(
         Target(
             name: "Netlink",
             dependencies: [
-                .Target(name: "CNetlink"),
-            ]),
+                .Target(name: "CNetlink")
+            ]
+        ),
         Target(
             name: "CNetlink"
+        ),
+        Target(
+            name: "NetlinkGeneric",
+            dependencies: [
+                .Target(name: "Netlink")
+                ]
+        ),
+        Target(
+            name: "Netlink80211",
+            dependencies: [
+                .Target(name: "Netlink"),
+                .Target(name: "NetlinkGeneric")
+                ]
         )
     ],
     dependencies: [

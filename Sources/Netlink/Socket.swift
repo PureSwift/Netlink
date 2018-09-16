@@ -56,11 +56,11 @@ public final class NetlinkSocket {
     
     // MARK: - Methods
     
-    public func subscribe(to group: NetlinkGenericMulticastGroupIdentifier) throws {
+    public func addMembership(to group: CInt) throws {
         
-        var groupValue = group.rawValue
+        var group = group
         
-        guard withUnsafePointer(to: &groupValue, { (pointer: UnsafePointer<CInt>) in
+        guard withUnsafePointer(to: &group, { (pointer: UnsafePointer<CInt>) in
             setsockopt(internalSocket,
                        SOL_NETLINK,
                        NETLINK_ADD_MEMBERSHIP,
@@ -69,11 +69,11 @@ public final class NetlinkSocket {
         }) == 0 else { throw POSIXError.fromErrno! }
     }
     
-    public func unsubscribe(from group: NetlinkGenericMulticastGroupIdentifier) throws {
+    public func removeMembership(from group: CInt) throws {
         
-        var groupValue = group.rawValue
+        var group = group
         
-        guard withUnsafePointer(to: &groupValue, { (pointer: UnsafePointer<CInt>) in
+        guard withUnsafePointer(to: &group, { (pointer: UnsafePointer<CInt>) in
             setsockopt(internalSocket,
                        SOL_NETLINK,
                        NETLINK_DROP_MEMBERSHIP,

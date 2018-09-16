@@ -7,6 +7,7 @@
 
 import Foundation
 import CNetlink
+import NetlinkGeneric
 
 public extension NetlinkGenericMulticastGroupName {
     

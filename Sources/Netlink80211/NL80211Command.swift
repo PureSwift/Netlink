@@ -12,6 +12,8 @@ import Darwin.C
 #endif
 
 import Foundation
+import Netlink
+import NetlinkGeneric
 import CNetlink
 
 public extension NetlinkGenericCommand {

@@ -13,6 +13,7 @@ import Darwin.C
 
 import Foundation
 import CNetlink
+import Netlink
 
 public extension NetlinkAttributeType {
     
