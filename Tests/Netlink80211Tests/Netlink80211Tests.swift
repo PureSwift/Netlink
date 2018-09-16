@@ -12,7 +12,7 @@ import CNetlink
 @testable import NetlinkGeneric
 @testable import Netlink80211
 
-final class NL80211Tests: XCTestCase {
+final class Netlink80211Tests: XCTestCase {
     
     static var allTests = [
         ("testGetScanResultsCommand", testGetScanResultsCommand),

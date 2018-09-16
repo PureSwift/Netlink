@@ -109,7 +109,6 @@ final class NetlinkGenericTests: XCTestCase {
         XCTAssertEqual(headerSize, 0)
         XCTAssertEqual(maxAttributes, 259)
         XCTAssertEqual(operationsArrayAttributes.count, 98)
-        //XCTAssert(operationsAttribute.type.contains(.nested))
         
         // decode
         do {

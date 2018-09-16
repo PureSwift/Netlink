@@ -1,9 +1,10 @@
 import XCTest
-@testable import WLANTests
 @testable import NetlinkTests
+@testable import NetlinkGenericTests
+@testable import Netlink80211Tests
 
 XCTMain([
-    testCase(WLANTests.allTests),
-    testCase(NetlinkTests.allTests)
-    testCase(NL80211Tests.allTests)
+    testCase(NetlinkTests.allTests),
+    testCase(Netlink80211Tests.allTests),
+    testCase(NetlinkGenericTests.allTests)
 ])
