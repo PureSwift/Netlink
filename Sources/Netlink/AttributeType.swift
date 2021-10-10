@@ -42,11 +42,11 @@ extension NetlinkAttributeType: Hashable {
 
 public extension NetlinkAttributeType {
     
-    public static let nested = NetlinkAttributeType(rawValue: UInt16(NLA_F_NESTED))
+    static let nested = NetlinkAttributeType(rawValue: UInt16(NLA_F_NESTED))
     
-    public static let networkByteOrder = NetlinkAttributeType(rawValue: UInt16(NLA_F_NET_BYTEORDER))
+    static let networkByteOrder = NetlinkAttributeType(rawValue: UInt16(NLA_F_NET_BYTEORDER))
     
-    public enum Generic {
+    enum Generic {
         
         public enum Controller {
             

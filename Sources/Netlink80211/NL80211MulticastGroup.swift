@@ -11,7 +11,7 @@ import NetlinkGeneric
 
 public extension NetlinkGenericMulticastGroupName {
     
-    public enum NL80211 {
+    enum NL80211 {
         
         public static let configuration = NetlinkGenericMulticastGroupName(rawValue: NL80211_MULTICAST_GROUP_CONFIG)
         

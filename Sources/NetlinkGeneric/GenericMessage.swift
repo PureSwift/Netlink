@@ -98,9 +98,9 @@ public struct NetlinkGenericMessage: NetlinkMessageProtocol {
 
 public extension NetlinkGenericMessage {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
-        let headerLength = type(of: self).headerLength
+        let headerLength = Self.headerLength
         
         guard data.count >= headerLength
             else { return nil }
@@ -119,7 +119,7 @@ public extension NetlinkGenericMessage {
         self.unused = UInt16(bytes: (data[18], data[19]))
         
         // payload 
-        if data.count > type(of: self).headerLength {
+        if data.count > Self.headerLength {
             
             let payloadLength = Int(length) - headerLength
             
@@ -131,7 +131,7 @@ public extension NetlinkGenericMessage {
         }
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data([
             length.bytes.0,

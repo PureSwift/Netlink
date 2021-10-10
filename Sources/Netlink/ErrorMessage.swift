@@ -96,7 +96,7 @@ public struct NetlinkErrorMessage: Error, NetlinkMessageProtocol {
 
 public extension NetlinkErrorMessage {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count >= NetlinkErrorMessage.length
             else { return nil }
@@ -136,7 +136,7 @@ public extension NetlinkErrorMessage {
         }
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data([
             length.bytes.0,

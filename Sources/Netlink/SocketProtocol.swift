@@ -28,8 +28,8 @@ public struct NetlinkSocketProtocol: RawRepresentable {
 public extension NetlinkSocketProtocol {
     
     /// Netlink Generic Protocol
-    public static let generic = NetlinkSocketProtocol(rawValue: NETLINK_GENERIC)
+    static let generic = NetlinkSocketProtocol(rawValue: NETLINK_GENERIC)
     
     /// Netlink Routing Protocol
-    public static let route = NetlinkSocketProtocol(rawValue: NETLINK_ROUTE)
+    static let route = NetlinkSocketProtocol(rawValue: NETLINK_ROUTE)
 }

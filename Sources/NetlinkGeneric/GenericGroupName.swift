@@ -7,10 +7,6 @@
 
 import Foundation
 
-#if swift(>=3.2)
-#elseif swift(>=3.0)
-    import Codable
-#endif
 
 public struct NetlinkGenericMulticastGroupName: RawRepresentable {
     

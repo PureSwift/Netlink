@@ -10,11 +10,6 @@ import Foundation
 import Netlink
 import NetlinkGeneric
 
-#if swift(>=3.2)
-#elseif swift(>=3.0)
-    import Codable
-#endif
-
 public struct NL80211ScanResult {
     
     public static let command = NetlinkGenericCommand.NL80211.newScanResults
@@ -32,7 +27,7 @@ public struct NL80211ScanResult {
 
 public extension NL80211ScanResult {
     
-    public struct BSS {
+    struct BSS {
         
         public let bssid: BSSID
         
@@ -215,7 +210,7 @@ public extension NL80211ScanResult.BSSID {
     
     internal static var length: Int { return 6 }
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count == type(of: self).length
             else { return nil }
@@ -223,8 +218,7 @@ public extension NL80211ScanResult.BSSID {
         self.bytes = (data[0], data[1], data[2], data[3], data[4], data[5])
     }
     
-    public var data: Data {
-        
+    var data: Data {
         return Data([bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5])
     }
 }

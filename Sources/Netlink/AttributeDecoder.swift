@@ -7,13 +7,6 @@
 
 import Foundation
 
-#if swift(>=3.2)
-internal typealias DecoderProtocol = Swift.Decoder
-#elseif swift(>=3.0)
-import Codable
-internal typealias DecoderProtocol = Decoder
-#endif
-
 /// Netlink Attribute Decoder
 public struct NetlinkAttributeDecoder {
     
@@ -94,7 +87,7 @@ public struct NetlinkAttributeDecoder {
 
 internal extension NetlinkAttributeDecoder {
     
-    final class Decoder: DecoderProtocol {
+    final class Decoder: Swift.Decoder {
         
         /// The path of coding keys taken to get to this point in decoding.
         fileprivate(set) var codingPath: [CodingKey]
@@ -233,9 +226,9 @@ fileprivate extension NetlinkAttributeDecoder.Decoder {
 
 // MARK: - Stack
 
-fileprivate extension NetlinkAttributeDecoder {
+private extension NetlinkAttributeDecoder {
     
-    fileprivate struct Stack {
+    struct Stack {
         
         private(set) var containers = [Container]()
         
@@ -308,7 +301,7 @@ internal extension NetlinkAttributeDecoder {
             self.decoder = decoder
             self.container = container
             self.codingPath = decoder.codingPath
-            self.allKeys = container.flatMap { Key(intValue: Int($0.type.rawValue)) }
+            self.allKeys = container.compactMap { Key(intValue: Int($0.type.rawValue)) }
         }
         
         // MARK: KeyedDecodingContainerProtocol
@@ -436,12 +429,12 @@ internal extension NetlinkAttributeDecoder {
             fatalError()
         }
         
-        func superDecoder() throws -> DecoderProtocol {
+        func superDecoder() throws -> Swift.Decoder {
             
             fatalError()
         }
         
-        func superDecoder(forKey key: Key) throws -> DecoderProtocol {
+        func superDecoder(forKey key: Key) throws -> Swift.Decoder {
             
             fatalError()
         }
@@ -480,9 +473,9 @@ internal extension NetlinkAttributeDecoder {
 
 // MARK: - SingleValueDecodingContainer
 
-fileprivate extension NetlinkAttributeDecoder {
+internal extension NetlinkAttributeDecoder {
     
-    fileprivate struct AttributeSingleValueDecodingContainer: SingleValueDecodingContainer {
+    struct AttributeSingleValueDecodingContainer: SingleValueDecodingContainer {
         
         // MARK: Properties
         
@@ -600,9 +593,9 @@ fileprivate extension NetlinkAttributeDecoder {
 
 // MARK: UnkeyedDecodingContainer
 
-fileprivate extension NetlinkAttributeDecoder {
+internal extension NetlinkAttributeDecoder {
     
-    fileprivate struct AttributesUnkeyedDecodingContainer: UnkeyedDecodingContainer {
+    struct AttributesUnkeyedDecodingContainer: UnkeyedDecodingContainer {
         
         // MARK: Properties
         
@@ -690,7 +683,7 @@ fileprivate extension NetlinkAttributeDecoder {
             throw DecodingError.typeMismatch([Any].self, DecodingError.Context(codingPath: codingPath, debugDescription: "Cannot decode unkeyed container."))
         }
         
-        mutating func superDecoder() throws -> DecoderProtocol {
+        mutating func superDecoder() throws -> Swift.Decoder {
             
             // set coding key context
             self.decoder.codingPath.append(Index(intValue: currentIndex))

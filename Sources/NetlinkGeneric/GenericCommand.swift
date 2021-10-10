@@ -41,7 +41,7 @@ extension NetlinkGenericCommand: ExpressibleByIntegerLiteral {
 
 public extension NetlinkGenericCommand {
     
-    public static let newFamily = NetlinkGenericCommand(rawValue: UInt8(CTRL_CMD_NEWFAMILY))
+    static let newFamily = NetlinkGenericCommand(rawValue: UInt8(CTRL_CMD_NEWFAMILY))
     
-    public static let getFamily = NetlinkGenericCommand(rawValue: UInt8(CTRL_CMD_GETFAMILY))
+    static let getFamily = NetlinkGenericCommand(rawValue: UInt8(CTRL_CMD_GETFAMILY))
 }

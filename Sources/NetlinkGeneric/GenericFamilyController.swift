@@ -9,10 +9,6 @@ import Foundation
 import CNetlink
 import Netlink
 
-#if swift(>=3.2)
-#elseif swift(>=3.0)
-    import Codable
-#endif
 
 public struct NetlinkGenericFamilyController {
     
@@ -33,7 +29,7 @@ public struct NetlinkGenericFamilyController {
 
 public extension NetlinkGenericFamilyController {
     
-    public struct Operation {
+    struct Operation {
         
         public let identifier: UInt32
         
@@ -43,7 +39,7 @@ public extension NetlinkGenericFamilyController {
 
 public extension NetlinkGenericFamilyController {
     
-    public struct MulticastGroup {
+    struct MulticastGroup {
         
         public let name: NetlinkGenericMulticastGroupName
         
@@ -65,13 +61,15 @@ public extension NetlinkSocket {
         let encoder = NetlinkAttributeEncoder()
         let commandData = try encoder.encode(command)
         
-        let message = NetlinkGenericMessage(type: NetlinkMessageType(rawValue: UInt16(GENL_ID_CTRL)),
-                                            flags: .request,
-                                            sequence: 0,
-                                            process: 0, // kernel
-                                            command: .getFamily,
-                                            version: 1,
-                                            payload: commandData)
+        let message = NetlinkGenericMessage(
+            type: NetlinkMessageType(rawValue: UInt16(GENL_ID_CTRL)),
+            flags: .request,
+            sequence: 0,
+            process: 0, // kernel
+            command: .getFamily,
+            version: 1,
+            payload: commandData
+        )
         
         // send message to kernel
         try send(message.data)

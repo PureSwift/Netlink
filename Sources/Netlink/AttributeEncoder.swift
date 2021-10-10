@@ -7,15 +7,6 @@
 
 import Foundation
 
-#if swift(>=3.2)
-    internal typealias EncoderProtocol = Swift.Encoder
-    public typealias CodableEncodingError = Swift.EncodingError
-#elseif swift(>=3.0)
-    import Codable
-    internal typealias EncoderProtocol = Encoder
-    public typealias CodableEncodingError = EncodingError
-#endif
-
 /// Netlink Attribute Encoder
 public struct NetlinkAttributeEncoder {
     
@@ -44,8 +35,8 @@ public struct NetlinkAttributeEncoder {
         assert(encoder.stack.containers.count == 1)
         
         guard case let .attributes(attributesContainer) = encoder.stack.root else {
-            
-            throw CodableEncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) is not encoded as attributes."))
+            //throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: [], debugDescription: "Top-level \(T.self) is not encoded as attributes."))
+            fatalError()
         }
         
         return attributesContainer.data
@@ -53,19 +44,15 @@ public struct NetlinkAttributeEncoder {
     
     public func encode(_ attributes: [NetlinkAttribute]) -> Data {
         
-        return attributes.reduce(Data(), { $0.0 + $0.1.paddedData })
+        return attributes.reduce(Data(), { $0 + $1.paddedData })
     }
 }
 
 public extension NetlinkAttributeEncoder {
     
-    public enum EncodingError: Error {
+    enum EncodingError: Error {
         
-        #if swift(>=3.2)
         public typealias Context = Swift.EncodingError.Context
-        #elseif swift(>=3.0)
-        public typealias Context = CodableEncodingError.Context
-        #endif
         
         /// Invalid coding key provided.
         case invalidKey(CodingKey, Context)
@@ -76,7 +63,7 @@ public extension NetlinkAttributeEncoder {
 
 internal extension NetlinkAttributeEncoder {
     
-    final class Encoder: EncoderProtocol {
+    final class Encoder: Swift.Encoder {
         
         // MARK: - Properties
         
@@ -207,7 +194,7 @@ internal extension NetlinkAttributeEncoder.Encoder {
 
 internal extension NetlinkAttributeEncoder.Encoder {
     
-    internal struct Stack {
+    struct Stack {
         
         private(set) var containers = [Container]()
         
@@ -253,11 +240,9 @@ internal extension NetlinkAttributeEncoder.Encoder {
         
         fileprivate init() { }
         
-        var data: Data {
-            
-            let size = attributes.reduce(0, { $0.0 + $0.1.paddedLength })
-            
-            return attributes.reduce(Data(capacity: size), { $0.0 + $0.1.paddedData })
+        var data: Data {            
+            let size = attributes.reduce(0, { $0 + $1.paddedLength })
+            return attributes.reduce(Data(capacity: size), { $0 + $1.paddedData })
         }
     }
     
@@ -369,12 +354,12 @@ internal extension NetlinkAttributeEncoder.Encoder {
             fatalError()
         }
         
-        func superEncoder() -> EncoderProtocol {
+        func superEncoder() -> Encoder {
             
             fatalError()
         }
         
-        func superEncoder(forKey key: K) -> EncoderProtocol {
+        func superEncoder(forKey key: K) -> Encoder {
             
             fatalError()
         }

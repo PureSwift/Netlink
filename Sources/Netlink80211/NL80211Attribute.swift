@@ -18,7 +18,7 @@ import Netlink
 public extension NetlinkAttributeType {
     
     /// 802.11 netlink interface
-    public enum NL80211 {
+    enum NL80211 {
         
         public static let wiphy = NetlinkAttributeType(NL80211_ATTR_WIPHY)
         

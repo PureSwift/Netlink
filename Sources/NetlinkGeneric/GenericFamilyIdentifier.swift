@@ -8,10 +8,6 @@
 import Foundation
 import CNetlink
 
-#if swift(>=3.2)
-#elseif swift(>=3.0)
-    import Codable
-#endif
 
 /// Netlink Generic Family Identifier
 public struct NetlinkGenericFamilyIdentifier: RawRepresentable {
@@ -38,9 +34,9 @@ extension NetlinkGenericFamilyIdentifier: Equatable {
 
 public extension NetlinkGenericFamilyIdentifier {
     
-    public static let generate = NetlinkGenericFamilyIdentifier(rawValue: UInt16(GENL_ID_GENERATE))
+    static let generate = NetlinkGenericFamilyIdentifier(rawValue: UInt16(GENL_ID_GENERATE))
     
-    public static let controller = NetlinkGenericFamilyIdentifier(rawValue: UInt16(GENL_ID_CTRL))
+    static let controller = NetlinkGenericFamilyIdentifier(rawValue: UInt16(GENL_ID_CTRL))
 }
 
 // MARK: - Codable

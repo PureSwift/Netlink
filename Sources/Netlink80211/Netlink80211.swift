@@ -12,8 +12,7 @@ import NetlinkGeneric
 
 public extension NetlinkGenericFamilyName {
     
-    public static var nl80211: NetlinkGenericFamilyName {
-        
-        get { return NetlinkGenericFamilyName(rawValue: NL80211_GENL_NAME) }
+    static var nl80211: NetlinkGenericFamilyName {
+        return NetlinkGenericFamilyName(rawValue: NL80211_GENL_NAME)
     }
 }

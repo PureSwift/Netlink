@@ -30,7 +30,7 @@ public enum NetlinkMessageDecodingError: Error {
 
 public extension NetlinkMessageProtocol {
     
-    public static func from(data: Data) throws -> [Self] {
+    static func from(data: Data) throws -> [Self] {
         
         var messages = [Self]()
         
@@ -128,7 +128,7 @@ public struct NetlinkMessage: NetlinkMessageProtocol {
 
 public extension NetlinkMessage {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard let header = NetlinkMessageHeader(data: Data(data.prefix(NetlinkMessageHeader.length)))
             else { return nil }
@@ -150,8 +150,7 @@ public extension NetlinkMessage {
         }
     }
     
-    public var data: Data {
-        
+    var data: Data {
         return header.data + payload
     }
 }

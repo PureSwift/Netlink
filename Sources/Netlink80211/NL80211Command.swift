@@ -19,7 +19,7 @@ import CNetlink
 public extension NetlinkGenericCommand {
     
     /// 802.11 netlink interface
-    public enum NL80211 {
+    enum NL80211 {
         
         public static let triggerScan = NetlinkGenericCommand(NL80211_CMD_TRIGGER_SCAN)
         

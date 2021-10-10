@@ -9,10 +9,6 @@ import Foundation
 import Netlink
 import NetlinkGeneric
 
-#if swift(>=3.2)
-#elseif swift(>=3.0)
-    import Codable
-#endif
 
 public struct NL80211TriggerScanCommand {
     

@@ -49,7 +49,7 @@ public struct NetlinkAttribute {
 
 public extension NetlinkAttribute {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
         guard data.count >= NetlinkAttribute.headerLength
             else { return nil }
@@ -67,7 +67,7 @@ public extension NetlinkAttribute {
         }
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data([
             length.bytes.0,
@@ -77,10 +77,8 @@ public extension NetlinkAttribute {
             ]) + payload
     }
     
-    public var paddedData: Data {
-        
+    var paddedData: Data {
         let padding = paddedLength - Int(length)
-        
         return data + Data(count: padding)
     }
 }

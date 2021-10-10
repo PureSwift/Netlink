@@ -8,7 +8,7 @@
 // MARK: - Handle
 
 /// A Swift class wrapper for a C object.
-internal protocol Handle: class {
+internal protocol Handle: AnyObject {
     
     associatedtype RawPointer: Equatable
     

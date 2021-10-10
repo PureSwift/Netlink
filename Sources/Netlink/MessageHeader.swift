@@ -178,9 +178,9 @@ public struct NetlinkMessageHeader {
 
 public extension NetlinkMessageHeader {
     
-    public init?(data: Data) {
+    init?(data: Data) {
         
-        guard data.count == type(of: self).length
+        guard data.count == Self.length
             else { return nil }
         
         self.length = UInt32(bytes: (data[0], data[1], data[2], data[3]))
@@ -190,7 +190,7 @@ public extension NetlinkMessageHeader {
         self.process = pid_t(bytes: (data[12], data[13], data[14], data[15]))
     }
     
-    public var data: Data {
+    var data: Data {
         
         return Data([
             length.bytes.0,

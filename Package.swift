@@ -1,38 +1,54 @@
+// swift-tools-version:5.1
 import PackageDescription
-
-#if os(macOS)
-let nativeDependency: Target.Dependency = .Target(name: "DarwinWLAN")
-#elseif os(Linux)
-let nativeDependency: Target.Dependency = .Target(name: "LinuxWLAN")
-#endif
 
 let package = Package(
     name: "Netlink",
-    targets: [
-        Target(
-            name: "Netlink"
+    products: [
+        .library(
+            name: "Netlink",
+            type: .dynamic,
+            targets: ["Netlink"]
         ),
-        Target(
+        .library(
             name: "NetlinkGeneric",
-            dependencies: [
-                .Target(name: "Netlink")
-                ]
+            type: .dynamic,
+            targets: ["NetlinkGeneric"]
         ),
-        Target(
+        .library(
             name: "Netlink80211",
-            dependencies: [
-                .Target(name: "Netlink"),
-                .Target(name: "NetlinkGeneric")
-                ]
+            type: .dynamic,
+            targets: ["Netlink80211"]
         )
     ],
     dependencies: [
-        .Package(url: "https://github.com/PureSwift/CNetlink.git", majorVersion: 1)
+        .package(
+            url: "https://github.com/PureSwift/swift-system.git",
+            .branch("master")
+        )
     ],
-    exclude: ["Xcode", "Carthage"]
+    targets: [
+        .target(
+            name: "Netlink",
+            dependencies: [
+                "CNetlink",
+                "SystemPackage"
+            ]
+        ),
+        .target(
+            name: "CNetlink"
+        ),
+        .target(
+            name: "NetlinkGeneric",
+            dependencies: [
+                "Netlink"
+            ]
+        ),
+        .target(
+            name: "Netlink80211",
+            dependencies: [
+                "Netlink",
+                "NetlinkGeneric"
+            ]
+        )
+    ]
 )
-
-#if swift(>=3.2)
-#elseif swift(>=3.0)
-package.dependencies.append(.Package(url: "https://github.com/PureSwift/Codable.git", majorVersion: 1))
-#endif

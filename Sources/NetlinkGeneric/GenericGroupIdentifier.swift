@@ -8,10 +8,6 @@
 import Foundation
 import Netlink
 
-#if swift(>=3.2)
-#elseif swift(>=3.0)
-    import Codable
-#endif
 
 /// Netlink Generic Family Group Identifier
 public struct NetlinkGenericMulticastGroupIdentifier: RawRepresentable {
@@ -59,13 +55,11 @@ extension NetlinkGenericMulticastGroupIdentifier: Codable {
 
 public extension NetlinkSocket {
     
-    public func subscribe(to group: NetlinkGenericMulticastGroupIdentifier) throws {
-        
+    func subscribe(to group: NetlinkGenericMulticastGroupIdentifier) throws {
         try addMembership(to: group.rawValue)
     }
     
-    public func unsubscribe(from group: NetlinkGenericMulticastGroupIdentifier) throws {
-        
+    func unsubscribe(from group: NetlinkGenericMulticastGroupIdentifier) throws {
         try removeMembership(from: group.rawValue)
     }
 }
