@@ -69,3 +69,4 @@ fastlane/test_output
 
 # SPM Generated
 Netlink.xcodeproj/*
+Package.resolved
