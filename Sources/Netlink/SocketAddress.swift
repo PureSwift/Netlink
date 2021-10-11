@@ -44,6 +44,17 @@ public struct NetlinkSocketAddress: SocketAddress, Equatable, Hashable {
     }
 }
 
+internal extension NetlinkSocketAddress {
+    
+    @inline(__always)
+    static var zero: NetlinkSocketAddress {
+        return NetlinkSocketAddress(
+            portID: 0,
+            groups: 0
+        )
+    }
+}
+
 extension sockaddr_nl: CSocketAddress {
     
     /// Socket Address Family
