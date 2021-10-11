@@ -5,81 +5,55 @@
 //  Created by Alsey Coleman Miller on 7/6/18.
 //
 
-#if os(Linux)
-import Glibc
-#elseif os(macOS)
-import Darwin.C
-#endif
-
 import Foundation
+import SystemPackage
 import CNetlink
 
+/// Netlink Socket
 public final class NetlinkSocket {
     
     // MARK: - Properties
     
+    /// Netlink protocol
     public let netlinkProtocol: NetlinkSocketProtocol
     
-    internal let internalSocket: CInt
+    /// Underlying file descriptor.
+    internal let fileDescriptor: FileDescriptor
     
     // MARK: - Initialization
     
     deinit {
-        
-        close(internalSocket)
+        do {
+            try fileDescriptor.close()
+        } catch {
+            assertionFailure("Unable to close Netlink socket. \(error)")
+        }
     }
     
-    public init(_ netlinkProtocol: NetlinkSocketProtocol, group: Int32 = 0) throws {
+    public init(
+        _ netlinkProtocol: NetlinkSocketProtocol,
+        group: Int32 = 0
+    ) throws {
         
         // open socket
-        let fileDescriptor = socket(PF_NETLINK, SOCK_RAW, netlinkProtocol.rawValue)
-        
-        guard fileDescriptor >= 0
-            else { throw POSIXError.fromErrno! }
-        
-        var address = sockaddr_nl(nl_family: __kernel_sa_family_t(AF_NETLINK),
-                                  nl_pad: UInt16(),
-                                  nl_pid: __u32(getpid()),
-                                  nl_groups: __u32(bitPattern: group))
+        let fileDescriptor = try FileDescriptor.netlink(
+            netlinkProtocol,
+            group: group
+        )
         
         // initialize socket
-        self.internalSocket = fileDescriptor
+        self.fileDescriptor = fileDescriptor
         self.netlinkProtocol = netlinkProtocol
-        
-        // bind socket
-        guard withUnsafePointer(to: &address, {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1, {
-                bind(internalSocket, $0, socklen_t(MemoryLayout<sockaddr_nl>.size))
-            })
-        }) >= 0 else { throw POSIXError.fromErrno! }
     }
     
     // MARK: - Methods
     
     public func addMembership(to group: CInt) throws {
-        
-        var group = group
-        
-        guard withUnsafePointer(to: &group, { (pointer: UnsafePointer<CInt>) in
-            setsockopt(internalSocket,
-                       SOL_NETLINK,
-                       NETLINK_ADD_MEMBERSHIP,
-                       UnsafeRawPointer(pointer),
-                       socklen_t(MemoryLayout<CInt>.size))
-        }) == 0 else { throw POSIXError.fromErrno! }
+        try fileDescriptor.setSocketOption(NetlinkSocketOption.AddMembership(group: group))
     }
     
     public func removeMembership(from group: CInt) throws {
-        
-        var group = group
-        
-        guard withUnsafePointer(to: &group, { (pointer: UnsafePointer<CInt>) in
-            setsockopt(internalSocket,
-                       SOL_NETLINK,
-                       NETLINK_DROP_MEMBERSHIP,
-                       UnsafeRawPointer(pointer),
-                       socklen_t(MemoryLayout<CInt>.size))
-        }) == 0 else { throw POSIXError.fromErrno! }
+        try fileDescriptor.setSocketOption(NetlinkSocketOption.RemoveMembership(group: group))
     }
     
     public func send(_ data: Data) throws {
@@ -89,16 +63,18 @@ public final class NetlinkSocket {
                                   nl_pid: 0,
                                   nl_groups: 0)
         
+        // sendto()
+        
         let sentBytes = withUnsafePointer(to: &address, {
             $0.withMemoryRebound(to: sockaddr.self, capacity: 1, { (socketPointer) in
                 data.withUnsafeBytes { (dataPointer: UnsafePointer<UInt8>) in
-                    sendto(internalSocket, UnsafeRawPointer(dataPointer), data.count, 0, socketPointer, socklen_t(MemoryLayout<sockaddr_nl>.size))
+                    sendto(fileDescriptor.rawValue, UnsafeRawPointer(dataPointer), data.count, 0, socketPointer, socklen_t(MemoryLayout<sockaddr_nl>.size))
                 }
             })
         })
         
-        guard sentBytes >= 0
-            else { throw POSIXError.fromErrno! }
+        //guard sentBytes >= 0
+        //    else { throw POSIXError.fromErrno! }
         
         guard sentBytes == data.count
             else { throw NetlinkSocketError.invalidSentBytes(sentBytes) }
@@ -141,12 +117,13 @@ public final class NetlinkSocket {
         
         var data = Data(count: size)
         
+        // recv()
         let recievedBytes = data.withUnsafeMutableBytes { (dataPointer: UnsafeMutablePointer<UInt8>) in
-            recv(internalSocket, UnsafeMutableRawPointer(dataPointer), size, flags)
+            recv(fileDescriptor.rawValue, UnsafeMutableRawPointer(dataPointer), size, flags)
         }
         
-        guard recievedBytes >= 0
-            else { throw POSIXError.fromErrno! }
+        //guard recievedBytes >= 0
+        //    else { throw POSIXError.fromErrno! }
         
         return Data(data.prefix(recievedBytes))
     }
