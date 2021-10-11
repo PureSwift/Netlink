@@ -5,7 +5,6 @@
 //  Created by Alsey Coleman Miller on 7/29/18.
 //
 
-import Foundation
 import SystemPackage
 
 #if !os(Linux)
@@ -18,11 +17,15 @@ internal func stub(function: StaticString = #function) -> Never {
 internal extension SocketAddressFamily {
     
     @usableFromInline
-    static var netlink: SocketAddressFamily { stub() }
+    static var netlink: SocketAddressFamily { SocketAddressFamily(rawValue: AF_NETLINK) }
 }
 
-/* level and options for setsockopt() */
+internal extension SocketOptionLevel {
+    
+    @usableFromInline
+    static var netlink: SocketOptionLevel { SocketOptionLevel(rawValue: SOL_NETLINK) }
+}
+
 internal let SOL_NETLINK: CInt = 270
 internal let AF_NETLINK: CInt = 16
-internal let PF_NETLINK: CInt = AF_NETLINK
 #endif
