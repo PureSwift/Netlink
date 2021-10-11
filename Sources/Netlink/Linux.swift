@@ -8,12 +8,21 @@
 import Foundation
 import SystemPackage
 
+#if !os(Linux)
+#warning("This code only runs on Linux")
+
+internal func stub(function: StaticString = #function) -> Never {
+    fatalError("This code only runs on Linux")
+}
+
+internal extension SocketAddressFamily {
+    
+    @usableFromInline
+    static var netlink: SocketAddressFamily { stub() }
+}
+
 /* level and options for setsockopt() */
 internal let SOL_NETLINK: CInt = 270
-
-#if os(Linux)
-internal let SOCK_RAW = CInt(Glibc.SOCK_RAW.rawValue)
-#elseif canImport(Darwin)
 internal let AF_NETLINK: CInt = 16
 internal let PF_NETLINK: CInt = AF_NETLINK
 #endif
