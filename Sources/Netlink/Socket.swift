@@ -58,20 +58,12 @@ public final class NetlinkSocket {
     
     public func send(_ data: Data) throws {
         
-        var address = sockaddr_nl(nl_family: __kernel_sa_family_t(AF_NETLINK),
-                                  nl_pad: 0,
-                                  nl_pid: 0,
-                                  nl_groups: 0)
-        
         // sendto()
-        
-        let sentBytes = withUnsafePointer(to: &address, {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1, { (socketPointer) in
-                data.withUnsafeBytes { (dataPointer: UnsafePointer<UInt8>) in
-                    sendto(fileDescriptor.rawValue, UnsafeRawPointer(dataPointer), data.count, 0, socketPointer, socklen_t(MemoryLayout<sockaddr_nl>.size))
-                }
-            })
-        })
+        let sentBytes = NetlinkSocketAddress.zero.withUnsafePointer { (addressPointer, addressPointerLength) in
+            data.withUnsafeBytes { dataPointer in
+                sendto(fileDescriptor.rawValue, dataPointer.baseAddress!, dataPointer.count, 0, addressPointer, addressPointerLength)
+            }
+        }
         
         //guard sentBytes >= 0
         //    else { throw POSIXError.fromErrno! }
@@ -118,8 +110,8 @@ public final class NetlinkSocket {
         var data = Data(count: size)
         
         // recv()
-        let recievedBytes = data.withUnsafeMutableBytes { (dataPointer: UnsafeMutablePointer<UInt8>) in
-            recv(fileDescriptor.rawValue, UnsafeMutableRawPointer(dataPointer), size, flags)
+        let recievedBytes = data.withUnsafeMutableBytes { dataPointer in
+            recv(fileDescriptor.rawValue, dataPointer.baseAddress!, dataPointer.count, flags)
         }
         
         //guard recievedBytes >= 0
