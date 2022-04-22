@@ -80,12 +80,9 @@ public final class NetlinkSocket {
         }) == 0 else { throw Errno(rawValue: errno) }
     }
     
-    public func send(_ data: Data) throws {
+    public func send(_ data: Data) async throws {
         
-        var address = sockaddr_nl(nl_family: __kernel_sa_family_t(AF_NETLINK),
-                                  nl_pad: 0,
-                                  nl_pid: 0,
-                                  nl_groups: 0)
+        var address = sockaddr_nl.zero
         
         let sentBytes = withUnsafePointer(to: &address, {
             $0.withMemoryRebound(to: sockaddr.self, capacity: 1, { (socketPointer) in
@@ -102,9 +99,9 @@ public final class NetlinkSocket {
             else { throw NetlinkSocketError.invalidSentBytes(sentBytes) }
     }
     
-    public func recieve <T: NetlinkMessageProtocol> (_ message: T.Type) throws -> [T] {
+    public func recieve <T: NetlinkMessageProtocol> (_ message: T.Type) async throws -> [T] {
         
-        let data = try recieve()
+        let data = try await recieve()
         
         if let errorMessages = try? NetlinkErrorMessage.from(data: data),
             let error = errorMessages.first(where: { $0.error != nil }) {
@@ -121,21 +118,21 @@ public final class NetlinkSocket {
         }
     }
     
-    public func recieve() throws -> Data {
+    public func recieve() async throws -> Data {
         
         let chunkSize = Int(getpagesize())
         
         var readData = Data()
         var chunk = Data()
         repeat {
-            chunk = try recieveChunk(size: chunkSize)
+            chunk = try await recieveChunk(size: chunkSize)
             readData.append(chunk)
         } while chunk.count == chunkSize // keep reading
         
         return readData
     }
     
-    internal func recieveChunk(size: Int, flags: CInt = 0) throws -> Data {
+    internal func recieveChunk(size: Int, flags: CInt = 0) async throws -> Data {
         
         var data = Data(count: size)
         

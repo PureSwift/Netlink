@@ -27,6 +27,10 @@ internal extension CInterop.NetlinkSocketAddress {
                   nl_pid: __u32(processID.rawValue),
                   nl_groups: __u32(bitPattern: group))
     }
+    
+    static var zero: CInterop.NetlinkSocketAddress {
+        .init(nl_family: __kernel_sa_family_t(AF_NETLINK), nl_pad: 0, nl_pid: 0, nl_groups: 0)
+    }
 }
 
 extension CInterop.NetlinkSocketAddress: CSocketAddress {
