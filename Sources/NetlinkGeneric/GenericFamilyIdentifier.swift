@@ -33,9 +33,7 @@ extension NetlinkGenericFamilyIdentifier: Equatable {
 // MARK: - Static Identifiers
 
 public extension NetlinkGenericFamilyIdentifier {
-    
-    static let generate = NetlinkGenericFamilyIdentifier(rawValue: UInt16(GENL_ID_GENERATE))
-    
+        
     static let controller = NetlinkGenericFamilyIdentifier(rawValue: UInt16(GENL_ID_CTRL))
 }
 

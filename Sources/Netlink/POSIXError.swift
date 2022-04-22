@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension POSIXError {
+internal extension POSIXError {
     
     /// Creates error from C ```errno```.
     static var fromErrno: POSIXError? {
@@ -19,8 +19,6 @@ public extension POSIXError {
         return self.init(code: code)
     }
     
-    #if os(macOS) || os(iOS) || os(watchOS) || os(tvOS)
-    
     /// Creates `POSIXError` from error code.
     init(code: POSIXErrorCode) {
         
@@ -30,6 +28,4 @@ public extension POSIXError {
         
         self.init(_nsError: nsError)
     }
-    
-    #endif
 }
