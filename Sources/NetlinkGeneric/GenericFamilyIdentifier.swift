@@ -8,25 +8,13 @@
 import Foundation
 import CNetlink
 
-
 /// Netlink Generic Family Identifier
-public struct NetlinkGenericFamilyIdentifier: RawRepresentable {
+public struct NetlinkGenericFamilyIdentifier: RawRepresentable, Equatable, Hashable, Codable {
     
     public let rawValue: UInt16
     
     public init(rawValue: UInt16) {
-        
         self.rawValue = rawValue
-    }
-}
-
-// MARK: - Equatable
-
-extension NetlinkGenericFamilyIdentifier: Equatable {
-    
-    public static func == (lhs: NetlinkGenericFamilyIdentifier, rhs: NetlinkGenericFamilyIdentifier) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
     }
 }
 
@@ -34,26 +22,5 @@ extension NetlinkGenericFamilyIdentifier: Equatable {
 
 public extension NetlinkGenericFamilyIdentifier {
         
-    static let controller = NetlinkGenericFamilyIdentifier(rawValue: UInt16(GENL_ID_CTRL))
-}
-
-// MARK: - Codable
-
-extension NetlinkGenericFamilyIdentifier: Codable {
-    
-    public init(from decoder: Decoder) throws {
-        
-        let container = try decoder.singleValueContainer()
-        
-        let rawValue = try container.decode(UInt16.self)
-        
-        self.init(rawValue: rawValue)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        
-        var container = encoder.singleValueContainer()
-        
-        try container.encode(rawValue)
-    }
+    static var controller: NetlinkGenericFamilyIdentifier { .init(rawValue: UInt16(GENL_ID_CTRL)) }
 }

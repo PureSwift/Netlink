@@ -116,7 +116,7 @@ import CNetlink
  */
 public struct NetlinkMessageHeader {
     
-    internal static let length = MemoryLayout<nlmsghdr>.size
+    internal static var length: Int { MemoryLayout<nlmsghdr>.size }
     
     /**
      Length: 32 bits
@@ -210,19 +210,5 @@ public extension NetlinkMessageHeader {
             process.bytes.2,
             process.bytes.3
             ])
-    }
-}
-
-// MARK: - Linux Native Type
-
-public extension nlmsghdr {
-    
-    init(_ header: NetlinkMessageHeader) {
-        
-        self.init(nlmsg_len: __u32(header.length),
-                  nlmsg_type: __u16(header.type.rawValue),
-                  nlmsg_flags: __u16(header.flags.rawValue),
-                  nlmsg_seq: __u32(header.sequence),
-                  nlmsg_pid: __u32(header.process))
     }
 }

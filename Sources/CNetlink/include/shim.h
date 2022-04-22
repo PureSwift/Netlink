@@ -8,7 +8,6 @@
  *
  */
 
-#include <sys/ioctl.h>
 #include <sys/types.h>
 #include <ifaddrs.h>
 #include <net/if.h>
@@ -21,6 +20,8 @@
 
 #include <linux/types.h>        /* for __u* and __s* typedefs */
 #include <linux/socket.h>        /* for "struct sockaddr" et al    */
+#include <linux/nl80211.h>
+#include <linux/genetlink.h>
 
 #else
 
@@ -36,10 +37,3 @@ typedef int64_t __s64;
 
 #endif
 
-#if linux
-#include <linux/nl80211.h>
-#include <linux/genetlink.h>
-#else
-#include "darwin/nl80211.h"
-#include "darwin/genetlink.h"
-#endif

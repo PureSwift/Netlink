@@ -11,7 +11,7 @@ import SystemPackage
 /// Netlink generic message payload.
 public struct NetlinkErrorMessage: Error, NetlinkMessageProtocol {
     
-    internal static let length = NetlinkMessageHeader.length + MemoryLayout<Int32>.size + NetlinkMessageHeader.length
+    internal static var length: Int { NetlinkMessageHeader.length + MemoryLayout<Int32>.size + NetlinkMessageHeader.length }
     
     // MARK: - Properties
     

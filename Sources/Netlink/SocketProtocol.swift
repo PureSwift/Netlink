@@ -34,7 +34,7 @@ extension NetlinkSocketProtocol: SocketProtocol {
 public extension NetlinkSocketProtocol {
     
     /// Netlink Generic Protocol
-    static var generic: NetlinkSocketProtocol { NetlinkSocketProtocol(rawValue: 16) }
+    static var generic: NetlinkSocketProtocol { NetlinkSocketProtocol(rawValue: NETLINK_GENERIC) }
     
     /// Netlink Routing Protocol
     static var route: NetlinkSocketProtocol { NetlinkSocketProtocol(rawValue: NETLINK_ROUTE) }

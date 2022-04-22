@@ -51,16 +51,16 @@ extension NetlinkMessageType: Equatable {
 public extension NetlinkMessageType {
     
     /// No operation, message must be discarded
-    static let none = NetlinkMessageType(rawValue: UInt16(NLMSG_NOOP))
+    static var none: NetlinkMessageType { NetlinkMessageType(rawValue: UInt16(NLMSG_NOOP)) }
     
     /// The message signals an error and the payload
     /// contains a nlmsgerr structure.  This can be looked
     /// at as a NACK and typically it is from FEC to CPC.
-    static let error = NetlinkMessageType(rawValue: UInt16(NLMSG_ERROR))
+    static var error: NetlinkMessageType { NetlinkMessageType(rawValue: UInt16(NLMSG_ERROR)) }
     
     /// Message terminates a multipart message.
-    static let done = NetlinkMessageType(rawValue: UInt16(NLMSG_DONE))
+    static var done: NetlinkMessageType { NetlinkMessageType(rawValue: UInt16(NLMSG_DONE)) }
     
     /// Overrun notification (Error). 
-    static let overrun = NetlinkMessageType(rawValue: UInt16(NLMSG_OVERRUN))
+    static var overrun: NetlinkMessageType { NetlinkMessageType(rawValue: UInt16(NLMSG_OVERRUN)) }
 }
