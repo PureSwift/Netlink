@@ -5,6 +5,12 @@ let libraryType: PackageDescription.Product.Library.LibraryType = .static
 
 let package = Package(
     name: "Netlink",
+    platforms: [
+        .macOS(.v10_15),
+        .iOS(.v13),
+        .watchOS(.v6),
+        .tvOS(.v13),
+    ],
     products: [
         .library(
             name: "Netlink",
@@ -24,8 +30,8 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/PureSwift/swift-system.git",
-            .branch("master")
+            url: "https://github.com/PureSwift/Socket.git",
+            .branch("main")
         )
     ],
     targets: [
@@ -33,10 +39,7 @@ let package = Package(
             name: "Netlink",
             dependencies: [
                 "CNetlink",
-                .product(
-                    name: "SystemPackage", 
-                    package: "swift-system"
-                )
+                "Socket"
             ]
         ),
         .target(
