@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SystemPackage
 
 /// Netlink generic message payload.
 public struct NetlinkErrorMessage: Error, NetlinkMessageProtocol {
@@ -20,7 +21,6 @@ public struct NetlinkErrorMessage: Error, NetlinkMessageProtocol {
      The length of the message in bytes, including the header.
      */
     public var length: UInt32 {
-        
         return UInt32(NetlinkErrorMessage.length + payload.count)
     }
     
@@ -57,15 +57,12 @@ public struct NetlinkErrorMessage: Error, NetlinkMessageProtocol {
      kernel to multiplex to the correct sockets. A PID of zero is used
      when sending messages to user space from the kernel.
      */
-    public var process: pid_t
+    public var process: ProcessID
     
     /// Message payload.
-    public var error: POSIXError? {
-        
-        guard let errorCode = POSIXErrorCode(rawValue: -errorCode)
-            else { return nil }
-        
-        return POSIXError(code: errorCode)
+    public var error: Errno? {
+        guard errorCode != 0 else { return nil }
+        return Errno(rawValue: errorCode)
     }
     
     internal var errorCode: Int32
@@ -80,15 +77,15 @@ public struct NetlinkErrorMessage: Error, NetlinkMessageProtocol {
     
     public init(flags: NetlinkMessageFlag = 0,
                 sequence: UInt32 = 0,
-                process: pid_t = 0,
-                error: POSIXError? = nil,
+                process: ProcessID = .current,
+                error: Errno? = nil,
                 request: NetlinkMessageHeader,
                 payload: Data = Data()) {
         
         self.flags = flags
         self.sequence = sequence
         self.process = process
-        self.errorCode = error?.code.rawValue ?? 0
+        self.errorCode = error?.rawValue ?? 0
         self.request = request
         self.payload = payload
     }
@@ -114,7 +111,7 @@ public extension NetlinkErrorMessage {
         
         self.flags = NetlinkMessageFlag(rawValue: UInt16(bytes: (data[6], data[7])))
         self.sequence = UInt32(bytes: (data[8], data[9], data[10], data[11]))
-        self.process = pid_t(bytes: (data[12], data[13], data[14], data[15]))
+        self.process = ProcessID(rawValue: .init(bytes: (data[12], data[13], data[14], data[15])))
         
         // error code
         self.errorCode = Int32(bytes: (data[16], data[17], data[18], data[19]))
@@ -127,11 +124,8 @@ public extension NetlinkErrorMessage {
         
         // payload
         if data.count > NetlinkErrorMessage.length {
-            
             self.payload = Data(data[NetlinkErrorMessage.length ..< length])
-            
         } else {
-            
             self.payload = Data()
         }
     }
@@ -151,10 +145,10 @@ public extension NetlinkErrorMessage {
             sequence.bytes.1,
             sequence.bytes.2,
             sequence.bytes.3,
-            process.bytes.0,
-            process.bytes.1,
-            process.bytes.2,
-            process.bytes.3,
+            process.rawValue.bytes.0,
+            process.rawValue.bytes.1,
+            process.rawValue.bytes.2,
+            process.rawValue.bytes.3,
             errorCode.bytes.0,
             errorCode.bytes.1,
             errorCode.bytes.2,
