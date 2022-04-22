@@ -1,22 +1,24 @@
 // swift-tools-version:5.1
 import PackageDescription
 
+let libraryType: PackageDescription.Product.Library.LibraryType = .static
+
 let package = Package(
     name: "Netlink",
     products: [
         .library(
             name: "Netlink",
-            type: .dynamic,
+            type: libraryType,
             targets: ["Netlink"]
         ),
         .library(
             name: "NetlinkGeneric",
-            type: .dynamic,
+            type: libraryType,
             targets: ["NetlinkGeneric"]
         ),
         .library(
             name: "Netlink80211",
-            type: .dynamic,
+            type: libraryType,
             targets: ["Netlink80211"]
         )
     ],
