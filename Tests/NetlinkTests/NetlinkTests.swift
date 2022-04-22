@@ -42,10 +42,7 @@ final class NetlinkTests: XCTestCase {
             XCTAssertEqual(error.flags, [])
             XCTAssertEqual(error.type, .error)
             XCTAssertEqual(error.errorCode, -95)
-            
-            #if os(Linux)
-            XCTAssertEqual(error.error?.code, .EOPNOTSUPP)
-            #endif
+            XCTAssertEqual(error.error, .notSupported)
         }
         
         do {
