@@ -7,6 +7,7 @@
 
 import Foundation
 import Netlink
+import CNetlink
 
 public extension NetlinkAttributeType {
     
