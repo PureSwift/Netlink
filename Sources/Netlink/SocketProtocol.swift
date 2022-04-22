@@ -20,7 +20,6 @@ public struct NetlinkSocketProtocol: RawRepresentable {
     public let rawValue: Int32
     
     public init(rawValue: Int32) {
-        
         self.rawValue = rawValue
     }
 }
@@ -28,8 +27,8 @@ public struct NetlinkSocketProtocol: RawRepresentable {
 public extension NetlinkSocketProtocol {
     
     /// Netlink Generic Protocol
-    static let generic = NetlinkSocketProtocol(rawValue: NETLINK_GENERIC)
+    static var generic: NetlinkSocketProtocol { NetlinkSocketProtocol(rawValue: 16) }
     
     /// Netlink Routing Protocol
-    static let route = NetlinkSocketProtocol(rawValue: NETLINK_ROUTE)
+    static var route: NetlinkSocketProtocol { NetlinkSocketProtocol(rawValue: NETLINK_ROUTE) }
 }
