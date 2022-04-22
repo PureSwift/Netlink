@@ -13,10 +13,6 @@ import CNetlink
 
 final class NetlinkTests: XCTestCase {
     
-    static var allTests = [
-        ("testErrorMessage", testErrorMessage)
-    ]
-    
     func testErrorMessage() {
         
         do {

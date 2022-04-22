@@ -15,11 +15,6 @@ import CNetlink
 
 final class NetlinkGenericTests: XCTestCase {
     
-    static var allTests = [
-        ("testResolveGenericFamilyCommand", testResolveGenericFamilyCommand),
-        ("testResolveGenericFamilyResponse", testResolveGenericFamilyResponse)
-    ]
-    
     func testResolveGenericFamilyCommand() {
         
         /**

@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.5
 import PackageDescription
 
 let libraryType: PackageDescription.Product.Library.LibraryType = .static
@@ -33,7 +33,10 @@ let package = Package(
             name: "Netlink",
             dependencies: [
                 "CNetlink",
-                "SystemPackage"
+                .product(
+                    name: "SystemPackage", 
+                    package: "swift-system"
+                )
             ]
         ),
         .target(
@@ -50,6 +53,27 @@ let package = Package(
             dependencies: [
                 "Netlink",
                 "NetlinkGeneric"
+            ]
+        ),
+        .testTarget(
+            name: "NetlinkTests",
+            dependencies: [
+                "Netlink",
+            ]
+        ),
+        .testTarget(
+            name: "NetlinkGenericTests",
+            dependencies: [
+                "Netlink",
+                "NetlinkGeneric",
+                "Netlink80211",
+            ]
+        ),
+        .testTarget(
+            name: "Netlink80211Tests",
+            dependencies: [
+                "Netlink",
+                "Netlink80211",
             ]
         )
     ]
