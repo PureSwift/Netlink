@@ -52,7 +52,7 @@ public extension NetlinkGenericFamilyController {
 public extension NetlinkSocket {
     
     /// Query the family name.
-    func resolve(name: NetlinkGenericFamilyName) async throws -> NetlinkGenericFamilyController {
+    func resolve(name: NetlinkGenericFamilyName, sequence: UInt32 = 0) async throws -> NetlinkGenericFamilyController {
         
         guard netlinkProtocol == .generic
             else { throw NetlinkSocketError.invalidProtocol }
@@ -64,7 +64,7 @@ public extension NetlinkSocket {
         let message = NetlinkGenericMessage(
             type: NetlinkMessageType(rawValue: UInt16(GENL_ID_CTRL)),
             flags: .request,
-            sequence: 0,
+            sequence: sequence,
             process: 0, // kernel
             command: .getFamily,
             version: 1,
