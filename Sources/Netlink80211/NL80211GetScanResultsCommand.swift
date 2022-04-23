@@ -18,7 +18,6 @@ public struct NL80211GetScanResultsCommand {
     public var interface: UInt32
     
     public init(interface: UInt32) {
-        
         self.interface = interface
     }
 }

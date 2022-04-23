@@ -17,6 +17,10 @@ public struct NL80211GetInterfaceCommand: Equatable, Hashable, Codable, Identifi
     
     public let id: UInt32 // NL80211_ATTR_IFINDEX
     
+    public init(id: UInt32) {
+        self.id = id
+    }
+    
     internal enum CodingKeys: String, NetlinkAttributeCodingKey {
         
         case id
