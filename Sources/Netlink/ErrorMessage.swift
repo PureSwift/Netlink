@@ -62,7 +62,7 @@ public struct NetlinkErrorMessage: Error, NetlinkMessageProtocol {
     /// Message payload.
     public var error: Errno? {
         guard errorCode != 0 else { return nil }
-        return Errno(rawValue: errorCode)
+        return Errno(rawValue: -errorCode)
     }
     
     internal var errorCode: Int32
