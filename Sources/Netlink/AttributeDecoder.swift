@@ -762,8 +762,8 @@ extension String: NetlinkAttributeDecodable {
     
     public init?(attributeData data: Data) {
         
-        self = data.withUnsafeBytes { (cString: UnsafePointer<UInt8>) in
-            String(cString: cString)
+        self = data.withUnsafeBytes {
+            String(cString: $0.bindMemory(to: UInt8.self).baseAddress!)
         }
     }
 }
