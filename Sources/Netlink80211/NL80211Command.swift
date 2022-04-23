@@ -15,11 +15,17 @@ public extension NetlinkGenericCommand {
     /// 802.11 netlink interface
     enum NL80211 {
         
+        /// NL80211_CMD_TRIGGER_SCAN
         public static var triggerScan: NetlinkGenericCommand { .init(NL80211_CMD_TRIGGER_SCAN) }
         
+        /// NL80211_CMD_GET_SCAN
         public static var getScan: NetlinkGenericCommand { .init(NL80211_CMD_GET_SCAN) }
         
+        /// NL80211_CMD_NEW_SCAN_RESULTS
         public static var newScanResults: NetlinkGenericCommand { .init(NL80211_CMD_NEW_SCAN_RESULTS) }
+        
+        /// NL80211_CMD_GET_INTERFACE
+        public static var getInterface: NetlinkGenericCommand { .init(NL80211_CMD_GET_INTERFACE) }
     }
 }
 

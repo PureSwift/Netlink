@@ -18,6 +18,8 @@ public extension NetlinkAttributeType {
         
         public static var wihpyName: NetlinkAttributeType { NetlinkAttributeType(NL80211_ATTR_WIPHY_NAME) }
         
+        public static var wihpyFrequency: NetlinkAttributeType { NetlinkAttributeType(NL80211_ATTR_WIPHY_FREQ) }
+        
         public static var interfaceIndex: NetlinkAttributeType { NetlinkAttributeType(NL80211_ATTR_IFINDEX) }
         
         public static var interfaceName: NetlinkAttributeType { NetlinkAttributeType(NL80211_ATTR_IFNAME) }

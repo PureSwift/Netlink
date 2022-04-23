@@ -186,21 +186,15 @@ extension NL80211ScanResult.BSSID: Codable {
     }
     
     public init(from decoder: Decoder) throws {
-        
         let container = try decoder.singleValueContainer()
-        
         let data = try container.decode(Data.self)
-        
         guard let bigEndianValue = NL80211ScanResult.BSSID(data: data)
             else { throw DecodingError.invalidData(data) }
-        
         self = bigEndianValue
     }
     
     public func encode(to encoder: Encoder) throws {
-        
         var container = encoder.singleValueContainer()
-        
         // store as big endian representation
         try container.encode(data)
     }

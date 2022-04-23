@@ -49,18 +49,13 @@ extension NL80211GetScanResultsCommand: Codable {
     }
     
     public init(from decoder: Decoder) throws {
-        
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         let interfaceIndex = try container.decode(UInt32.self, forKey: .interfaceIndex)
-        
         self.init(interface: interfaceIndex)
     }
     
     public func encode(to encoder: Encoder) throws {
-        
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
         try container.encode(interface, forKey: .interfaceIndex)
     }
 }

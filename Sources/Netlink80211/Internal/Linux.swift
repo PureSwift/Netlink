@@ -37,6 +37,7 @@ public struct nl80211_commands: RawRepresentable, Equatable, Hashable {
 public var NL80211_CMD_TRIGGER_SCAN: nl80211_commands { .init(.NL80211_CMD_TRIGGER_SCAN) }
 public var NL80211_CMD_GET_SCAN: nl80211_commands { .init(.NL80211_CMD_GET_SCAN) }
 public var NL80211_CMD_NEW_SCAN_RESULTS: nl80211_commands { .init(.NL80211_CMD_NEW_SCAN_RESULTS) }
+public var NL80211_CMD_GET_INTERFACE: nl80211_commands { .init(.NL80211_CMD_GET_INTERFACE) }
 
 enum _nl80211_commands: CInt {
     /* don't change the order or add anything between this is ABI! */
@@ -245,6 +246,8 @@ public struct nl80211_attrs: RawRepresentable, Equatable, Hashable {
 public var NL80211_ATTR_WIPHY: nl80211_attrs { .init(.NL80211_ATTR_WIPHY) }
 
 public var NL80211_ATTR_WIPHY_NAME: nl80211_attrs { .init(.NL80211_ATTR_WIPHY_NAME) }
+
+public var NL80211_ATTR_WIPHY_FREQ: nl80211_attrs { .init(.NL80211_ATTR_WIPHY_FREQ) }
 
 public var NL80211_ATTR_IFINDEX: nl80211_attrs { .init(.NL80211_ATTR_IFINDEX) }
 

@@ -19,7 +19,6 @@ public struct NL80211TriggerScanCommand {
     public var interface: UInt32
     
     public init(interface: UInt32) {
-        
         self.interface = interface
     }
 }
@@ -31,7 +30,6 @@ extension NL80211TriggerScanCommand: Codable {
         case interfaceIndex
         
         init?(attribute: NetlinkAttributeType) {
-            
             switch attribute {
             case NetlinkAttributeType.NL80211.interfaceIndex:
                 self = .interfaceIndex
@@ -41,7 +39,6 @@ extension NL80211TriggerScanCommand: Codable {
         }
         
         var attribute: NetlinkAttributeType {
-            
             switch self {
             case .interfaceIndex:
                 return NetlinkAttributeType.NL80211.interfaceIndex
@@ -50,18 +47,13 @@ extension NL80211TriggerScanCommand: Codable {
     }
     
     public init(from decoder: Decoder) throws {
-        
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
         let interfaceIndex = try container.decode(UInt32.self, forKey: .interfaceIndex)
-        
         self.init(interface: interfaceIndex)
     }
     
     public func encode(to encoder: Encoder) throws {
-        
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
         try container.encode(interface, forKey: .interfaceIndex)
     }
 }
