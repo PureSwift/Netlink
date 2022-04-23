@@ -82,18 +82,7 @@ public final class NetlinkSocket {
     
     public func send(_ data: Data) async throws {
         
-        var address = sockaddr_nl.zero
-        
-        let sentBytes = withUnsafePointer(to: &address, {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1, { (socketPointer) in
-                data.withUnsafeBytes { (dataPointer: UnsafePointer<UInt8>) in
-                    sendto(socket.fileDescriptor.rawValue, UnsafeRawPointer(dataPointer), data.count, 0, socketPointer, socklen_t(MemoryLayout<sockaddr_nl>.size))
-                }
-            })
-        })
-        
-        guard sentBytes >= 0
-            else { throw Errno(rawValue: errno) }
+        let sentBytes = try await socket.write(data)
         
         guard sentBytes == data.count
             else { throw NetlinkSocketError.invalidSentBytes(sentBytes) }
@@ -105,15 +94,10 @@ public final class NetlinkSocket {
         
         if let errorMessages = try? NetlinkErrorMessage.from(data: data),
             let error = errorMessages.first(where: { $0.error != nil }) {
-            
             throw error
-            
         } else if let messages = try? T.from(data: data) {
-            
             return messages
-            
         } else {
-            
             throw NetlinkSocketError.invalidData(data)
         }
     }
@@ -125,25 +109,11 @@ public final class NetlinkSocket {
         var readData = Data()
         var chunk = Data()
         repeat {
-            chunk = try await recieveChunk(size: chunkSize)
+            chunk = try await socket.read(chunkSize)
             readData.append(chunk)
         } while chunk.count == chunkSize // keep reading
         
         return readData
-    }
-    
-    internal func recieveChunk(size: Int, flags: CInt = 0) async throws -> Data {
-        
-        var data = Data(count: size)
-        
-        let recievedBytes = data.withUnsafeMutableBytes { (dataPointer: UnsafeMutablePointer<UInt8>) in
-            recv(socket.fileDescriptor.rawValue, UnsafeMutableRawPointer(dataPointer), size, flags)
-        }
-        
-        guard recievedBytes >= 0
-            else { throw Errno(rawValue: errno) }
-        
-        return Data(data.prefix(recievedBytes))
     }
 }
 
