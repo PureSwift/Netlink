@@ -10,44 +10,12 @@ import Netlink
 
 
 /// Netlink Generic Family Group Identifier
-public struct NetlinkGenericMulticastGroupIdentifier: RawRepresentable {
+public struct NetlinkGenericMulticastGroupIdentifier: RawRepresentable, Equatable, Hashable, Codable {
     
     public let rawValue: Int32
     
     public init(rawValue: Int32) {
-        
         self.rawValue = rawValue
-    }
-}
-
-// MARK: - Equatable
-
-extension NetlinkGenericMulticastGroupIdentifier: Equatable {
-    
-    public static func == (lhs: NetlinkGenericMulticastGroupIdentifier, rhs: NetlinkGenericMulticastGroupIdentifier) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-// MARK: - Codable
-
-extension NetlinkGenericMulticastGroupIdentifier: Codable {
-    
-    public init(from decoder: Decoder) throws {
-        
-        let container = try decoder.singleValueContainer()
-        
-        let rawValue = try container.decode(Int32.self)
-        
-        self.init(rawValue: rawValue)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        
-        var container = encoder.singleValueContainer()
-        
-        try container.encode(rawValue)
     }
 }
 
