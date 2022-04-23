@@ -6,27 +6,24 @@
 //
 
 import Foundation
-import CNetlink
 import Netlink
 
-
-public struct NetlinkGetGenericFamilyIdentifierCommand {
+public struct NetlinkGetGenericFamilyIdentifierCommand: Equatable, Hashable, Codable {
     
-    public static let command: NetlinkGenericCommand = .getFamily
+    public static var command: NetlinkGenericCommand { .getFamily }
     
-    public static let version: NetlinkGenericVersion = 1
+    public static var version: NetlinkGenericVersion { 1 }
     
     public var name: NetlinkGenericFamilyName
     
     public init(name: NetlinkGenericFamilyName) {
-        
         self.name = name
     }
 }
 
-extension NetlinkGetGenericFamilyIdentifierCommand: Codable {
+internal extension NetlinkGetGenericFamilyIdentifierCommand {
     
-    internal enum CodingKeys: String, NetlinkAttributeCodingKey {
+    enum CodingKeys: String, NetlinkAttributeCodingKey {
         
         case name
         
@@ -47,21 +44,5 @@ extension NetlinkGetGenericFamilyIdentifierCommand: Codable {
                 return NetlinkAttributeType.Generic.Controller.familyName
             }
         }
-    }
-    
-    public init(from decoder: Decoder) throws {
-        
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        let name = try container.decode(NetlinkGenericFamilyName.self, forKey: .name)
-        
-        self.init(name: name)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(name.rawValue, forKey: .name)
     }
 }
