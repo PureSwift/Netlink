@@ -12,9 +12,9 @@ import NetlinkGeneric
 
 public struct NL80211ScanResult {
     
-    public static let command = NetlinkGenericCommand.NL80211.newScanResults
+    public static var command: NetlinkGenericCommand { NetlinkGenericCommand.NL80211.newScanResults }
     
-    public static let version: NetlinkGenericVersion = 0
+    public static var version: NetlinkGenericVersion { 0 }
     
     public let generation: UInt32
     
