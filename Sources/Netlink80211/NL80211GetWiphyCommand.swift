@@ -1,17 +1,18 @@
 //
-//  NL80211GetInterfaceCommand.swift
+//  NL80211GetWiphyCommand.swift
 //  
 //
 //  Created by Alsey Coleman Miller on 4/23/22.
 //
 
+
 import Foundation
 import Netlink
 import NetlinkGeneric
 
-public struct NL80211GetInterfaceCommand: Equatable, Hashable, Codable, Identifiable {
+public struct NL80211GetWiphyCommand: Equatable, Hashable, Codable, Identifiable {
     
-    public static var command: NetlinkGenericCommand { NetlinkGenericCommand.NL80211.getInterface }
+    public static var command: NetlinkGenericCommand { NetlinkGenericCommand.NL80211.getWiphy }
     
     public static var version: NetlinkGenericVersion { 0 }
     

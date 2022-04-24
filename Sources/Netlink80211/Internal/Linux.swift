@@ -18,9 +18,8 @@ public var NL80211_MULTICAST_GROUP_TESTMODE: String { "testmode" }
 
 public struct nl80211_commands: RawRepresentable, Equatable, Hashable {
     
-    public var rawValue: CInt {
-        value.rawValue
-    }
+    public let rawValue: CInt
+    
     public init?(rawValue: CInt) {
         guard let value = _nl80211_commands(rawValue: rawValue) else {
             return nil
@@ -28,9 +27,8 @@ public struct nl80211_commands: RawRepresentable, Equatable, Hashable {
         self.init(value)
     }
     
-    let value: _nl80211_commands
-    init(_ value: _nl80211_commands) {
-        self.value = value
+    fileprivate init(_ value: _nl80211_commands) {
+        self.rawValue = value.rawValue
     }
 }
 
@@ -38,6 +36,7 @@ public var NL80211_CMD_TRIGGER_SCAN: nl80211_commands { .init(.NL80211_CMD_TRIGG
 public var NL80211_CMD_GET_SCAN: nl80211_commands { .init(.NL80211_CMD_GET_SCAN) }
 public var NL80211_CMD_NEW_SCAN_RESULTS: nl80211_commands { .init(.NL80211_CMD_NEW_SCAN_RESULTS) }
 public var NL80211_CMD_GET_INTERFACE: nl80211_commands { .init(.NL80211_CMD_GET_INTERFACE) }
+public var NL80211_CMD_GET_WIPHY: nl80211_commands { .init(.NL80211_CMD_GET_WIPHY) }
 
 enum _nl80211_commands: CInt {
     /* don't change the order or add anything between this is ABI! */
