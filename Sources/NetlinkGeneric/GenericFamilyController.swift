@@ -7,6 +7,7 @@
 
 import Foundation
 import Netlink
+import CNetlink
 
 /// Netlink Generic Family Controller
 public struct NetlinkGenericFamilyController: Equatable, Hashable, Codable, Identifiable {
