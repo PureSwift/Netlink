@@ -113,7 +113,7 @@ final class NetlinkGenericTests: XCTestCase {
             let value = try decoder.decode(NetlinkGenericFamilyController.self, from: response)
             
             XCTAssertEqual(value.name, .nl80211)
-            XCTAssertEqual(value.identifier.rawValue, 28)
+            XCTAssertEqual(value.id.rawValue, 28)
         }
             
         catch { XCTFail("Could not decode: \(error)"); return }

@@ -6,13 +6,12 @@
 //
 
 import Foundation
-import CNetlink
 import Netlink
 
-
-public struct NetlinkGenericFamilyController {
+/// Netlink Generic Family Controller
+public struct NetlinkGenericFamilyController: Equatable, Hashable, Codable, Identifiable {
     
-    public let identifier: NetlinkGenericFamilyIdentifier
+    public let id: NetlinkGenericFamilyIdentifier
     
     public var name: NetlinkGenericFamilyName
     
@@ -29,9 +28,9 @@ public struct NetlinkGenericFamilyController {
 
 public extension NetlinkGenericFamilyController {
     
-    struct Operation {
+    struct Operation: Equatable, Hashable, Codable, Identifiable {
         
-        public let identifier: UInt32
+        public let id: UInt32
         
         public var flags: UInt32
     }
@@ -39,11 +38,11 @@ public extension NetlinkGenericFamilyController {
 
 public extension NetlinkGenericFamilyController {
     
-    struct MulticastGroup {
+    struct MulticastGroup: Equatable, Hashable, Codable, Identifiable {
+        
+        public let id: NetlinkGenericMulticastGroupIdentifier
         
         public let name: NetlinkGenericMulticastGroupName
-        
-        public let identifier: NetlinkGenericMulticastGroupIdentifier
     }
 }
 
@@ -89,11 +88,11 @@ public extension NetlinkSocket {
 
 // MARK: - Codable
 
-extension NetlinkGenericFamilyController: Codable {
+extension NetlinkGenericFamilyController {
     
-    internal enum CodingKeys: String, NetlinkAttributeCodingKey {
+    enum CodingKeys: String, NetlinkAttributeCodingKey {
         
-        case identifier
+        case id
         case name
         case version
         case headerSize
@@ -105,7 +104,7 @@ extension NetlinkGenericFamilyController: Codable {
             
             switch attribute {
             case NetlinkAttributeType.Generic.Controller.familyIdentifier:
-                self = .identifier
+                self = .id
             case NetlinkAttributeType.Generic.Controller.familyName:
                 self = .name
             case NetlinkAttributeType.Generic.Controller.version:
@@ -126,7 +125,7 @@ extension NetlinkGenericFamilyController: Codable {
         var attribute: NetlinkAttributeType {
             
             switch self {
-            case .identifier:
+            case .id:
                 return NetlinkAttributeType.Generic.Controller.familyIdentifier
             case .name:
                 return NetlinkAttributeType.Generic.Controller.familyName
@@ -143,46 +142,20 @@ extension NetlinkGenericFamilyController: Codable {
             }
         }
     }
-    
-    public init(from decoder: Decoder) throws {
-        
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.identifier = try container.decode(NetlinkGenericFamilyIdentifier.self, forKey: .identifier)
-        self.name = try container.decode(NetlinkGenericFamilyName.self, forKey: .name)
-        self.version = try container.decode(UInt32.self, forKey: .version)
-        self.headerSize = try container.decode(UInt32.self, forKey: .headerSize)
-        self.maxAttributes = try container.decode(UInt32.self, forKey: .maxAttributes)
-        self.operations = try container.decode([Operation].self, forKey: .operations)
-        self.multicastGroups = try container.decode([MulticastGroup].self, forKey: .multicastGroups)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(identifier, forKey: .identifier)
-        try container.encode(name, forKey: .name)
-        try container.encode(version, forKey: .version)
-        try container.encode(headerSize, forKey: .headerSize)
-        try container.encode(maxAttributes, forKey: .maxAttributes)
-        try container.encode(operations, forKey: .operations)
-        try container.encode(multicastGroups, forKey: .multicastGroups)
-    }
 }
 
-extension NetlinkGenericFamilyController.Operation: Codable {
+extension NetlinkGenericFamilyController.Operation {
     
-    internal enum CodingKeys: String, NetlinkAttributeCodingKey {
+    enum CodingKeys: String, NetlinkAttributeCodingKey {
         
-        case identifier
+        case id
         case flags
         
         init?(attribute: NetlinkAttributeType) {
             
             switch attribute {
             case NetlinkAttributeType.Generic.Controller.Operation.identifier:
-                self = .identifier
+                self = .id
             case NetlinkAttributeType.Generic.Controller.Operation.flags:
                 self = .flags
             default:
@@ -193,43 +166,27 @@ extension NetlinkGenericFamilyController.Operation: Codable {
         var attribute: NetlinkAttributeType {
             
             switch self {
-            case .identifier:
+            case .id:
                 return NetlinkAttributeType.Generic.Controller.Operation.identifier
             case .flags:
                 return NetlinkAttributeType.Generic.Controller.Operation.flags
             }
         }
     }
-    
-    public init(from decoder: Decoder) throws {
-        
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.identifier = try container.decode(UInt32.self, forKey: .identifier)
-        self.flags = try container.decode(UInt32.self, forKey: .flags)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(identifier, forKey: .identifier)
-        try container.encode(flags, forKey: .flags)
-    }
 }
 
-extension NetlinkGenericFamilyController.MulticastGroup: Codable {
+extension NetlinkGenericFamilyController.MulticastGroup {
     
-    internal enum CodingKeys: String, NetlinkAttributeCodingKey {
+    enum CodingKeys: String, NetlinkAttributeCodingKey {
         
-        case identifier
+        case id
         case name
         
         init?(attribute: NetlinkAttributeType) {
             
             switch attribute {
             case NetlinkAttributeType.Generic.Controller.MulticastGroup.identifier:
-                self = .identifier
+                self = .id
             case NetlinkAttributeType.Generic.Controller.MulticastGroup.name:
                 self = .name
             default:
@@ -240,27 +197,11 @@ extension NetlinkGenericFamilyController.MulticastGroup: Codable {
         var attribute: NetlinkAttributeType {
             
             switch self {
-            case .identifier:
+            case .id:
                 return NetlinkAttributeType.Generic.Controller.MulticastGroup.identifier
             case .name:
                 return NetlinkAttributeType.Generic.Controller.MulticastGroup.name
             }
         }
-    }
-    
-    public init(from decoder: Decoder) throws {
-        
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.identifier = try container.decode(NetlinkGenericMulticastGroupIdentifier.self, forKey: .identifier)
-        self.name = try container.decode(NetlinkGenericMulticastGroupName.self, forKey: .name)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(identifier, forKey: .identifier)
-        try container.encode(name, forKey: .name)
     }
 }
