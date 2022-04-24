@@ -10,13 +10,13 @@ import Foundation
 import Netlink
 import NetlinkGeneric
 
-public struct NL80211ScanResult {
+public struct NL80211ScanResult: Equatable, Hashable, Codable {
     
     public static var command: NetlinkGenericCommand { NetlinkGenericCommand.NL80211.newScanResults }
     
     public static var version: NetlinkGenericVersion { 0 }
     
-    public let generation: UInt32
+    public let generation: UInt32?
     
     public let interface: UInt32
     
@@ -27,7 +27,7 @@ public struct NL80211ScanResult {
 
 public extension NL80211ScanResult {
     
-    struct BSS {
+    struct BSS: Equatable, Hashable, Codable {
         
         public let bssid: BSSID
         
@@ -37,13 +37,13 @@ public extension NL80211ScanResult {
 
 // MARK: - Codable
 
-extension NL80211ScanResult: Codable {
+extension NL80211ScanResult {
     
     internal enum CodingKeys: String, NetlinkAttributeCodingKey {
         
         case bss
         case generation
-        case interfaceIndex
+        case interface
         case wirelessDevice
         
         init?(attribute: NetlinkAttributeType) {
@@ -54,7 +54,7 @@ extension NL80211ScanResult: Codable {
             case NetlinkAttributeType.NL80211.generation:
                 self = .generation
             case NetlinkAttributeType.NL80211.interfaceIndex:
-                self = .interfaceIndex
+                self = .interface
             case NetlinkAttributeType.NL80211.wirelessDevice:
                 self = .wirelessDevice
             default:
@@ -69,36 +69,16 @@ extension NL80211ScanResult: Codable {
                 return NetlinkAttributeType.NL80211.bss
             case .generation:
                 return NetlinkAttributeType.NL80211.generation
-            case .interfaceIndex:
+            case .interface:
                 return NetlinkAttributeType.NL80211.interfaceIndex
             case .wirelessDevice:
                 return NetlinkAttributeType.NL80211.wirelessDevice
             }
         }
     }
-    
-    public init(from decoder: Decoder) throws {
-        
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.interface = try container.decode(UInt32.self, forKey: .interfaceIndex)
-        self.generation = try container.decode(UInt32.self, forKey: .generation)
-        self.wirelessDevice = try container.decode(UInt64.self, forKey: .wirelessDevice)
-        self.bss = try container.decode(BSS.self, forKey: .bss)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(bss, forKey: .bss)
-        try container.encode(interface, forKey: .interfaceIndex)
-        try container.encode(generation, forKey: .generation)
-        try container.encode(wirelessDevice, forKey: .wirelessDevice)
-    }
 }
 
-extension NL80211ScanResult.BSS: Codable {
+extension NL80211ScanResult.BSS {
     
     internal enum CodingKeys: String, NetlinkAttributeCodingKey {
         
@@ -127,22 +107,6 @@ extension NL80211ScanResult.BSS: Codable {
             }
         }
     }
-    
-    public init(from decoder: Decoder) throws {
-        
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.bssid = try container.decode(NL80211ScanResult.BSSID.self, forKey: .bssid)
-        self.informationElements = try container.decode(Data.self, forKey: .informationElements)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        try container.encode(bssid, forKey: .bssid)
-        try container.encode(informationElements, forKey: .informationElements)
-    }
 }
 
 extension NL80211ScanResult {
@@ -164,32 +128,45 @@ extension NL80211ScanResult {
         // MARK: - Initialization
         
         public init(bytes: ByteValue = (0, 0, 0, 0, 0, 0)) {
-            
             self.bytes = bytes
         }
+    }
+}
+
+extension NL80211ScanResult.BSSID: Equatable {
+    
+    public static func == (lhs: NL80211ScanResult.BSSID, rhs: NL80211ScanResult.BSSID) -> Bool {
+        return lhs.bytes.0 == rhs.bytes.0
+            && lhs.bytes.1 == rhs.bytes.1
+            && lhs.bytes.2 == rhs.bytes.2
+            && lhs.bytes.3 == rhs.bytes.3
+            && lhs.bytes.4 == rhs.bytes.4
+            && lhs.bytes.5 == rhs.bytes.5
+    }
+}
+
+extension NL80211ScanResult.BSSID: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        withUnsafeBytes(of: bytes) { hasher.combine(bytes: $0) }
     }
 }
 
 extension NL80211ScanResult.BSSID: CustomStringConvertible {
     
     public var description: String {
-        
         return String(format: "%x:%x:%x:%x:%x:%x", bytes.0, bytes.1, bytes.2, bytes.3, bytes.4, bytes.5).uppercased()
     }
 }
 
 extension NL80211ScanResult.BSSID: Codable {
     
-    public enum DecodingError: Error {
-        
-        case invalidData(Data)
-    }
-    
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let data = try container.decode(Data.self)
-        guard let bigEndianValue = NL80211ScanResult.BSSID(data: data)
-            else { throw DecodingError.invalidData(data) }
+        guard let bigEndianValue = NL80211ScanResult.BSSID(data: data) else {
+            throw DecodingError.typeMismatch(NL80211ScanResult.BSSID.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Invalid bytes for BSSID"))
+        }
         self = bigEndianValue
     }
     
