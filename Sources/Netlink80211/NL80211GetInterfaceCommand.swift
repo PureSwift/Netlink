@@ -9,27 +9,27 @@ import Foundation
 import Netlink
 import NetlinkGeneric
 
-public struct NL80211GetInterfaceCommand: Equatable, Hashable, Codable, Identifiable {
+public struct NL80211GetInterfaceCommand: Equatable, Hashable, Codable {
     
     public static var command: NetlinkGenericCommand { NetlinkGenericCommand.NL80211.getInterface }
     
     public static var version: NetlinkGenericVersion { 0 }
     
-    public let id: UInt32 // NL80211_ATTR_IFINDEX
+    public let interface: UInt32 // NL80211_ATTR_IFINDEX
     
-    public init(id: UInt32) {
-        self.id = id
+    public init(interface: UInt32) {
+        self.interface = interface
     }
     
     internal enum CodingKeys: String, NetlinkAttributeCodingKey {
         
-        case id
+        case interface
         
         init?(attribute: NetlinkAttributeType) {
             
             switch attribute {
             case NetlinkAttributeType.NL80211.interfaceIndex:
-                self = .id
+                self = .interface
             default:
                 return nil
             }
@@ -38,7 +38,7 @@ public struct NL80211GetInterfaceCommand: Equatable, Hashable, Codable, Identifi
         var attribute: NetlinkAttributeType {
             
             switch self {
-            case .id:
+            case .interface:
                 return NetlinkAttributeType.NL80211.interfaceIndex
             }
         }
