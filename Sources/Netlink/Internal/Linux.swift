@@ -7,6 +7,7 @@
 
 import Foundation
 import SystemPackage
+import Socket
 import CNetlink
 
 /* level and options for setsockopt() */

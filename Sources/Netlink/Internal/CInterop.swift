@@ -6,6 +6,7 @@
 //
 
 import SystemPackage
+import Socket
 import CNetlink
 #if canImport(Glibc)
 import Glibc
@@ -13,8 +14,13 @@ import Glibc
 
 public extension CInterop {
     
+    /// The platform process identifier.
+    typealias ProcessID = pid_t
+    
+    /// Netlink socket address
     typealias NetlinkSocketAddress = sockaddr_nl
     
+    /// Netlink message header
     typealias NetlinkMessageHeader = nlmsghdr
 }
 
@@ -25,7 +31,7 @@ internal extension CInterop.NetlinkSocketAddress {
         group: CInt = 0
     ) {
         self.init(
-            nl_family: CInterop.SocketAddressFamily(AF_NETLINK),
+            nl_family: CInterop.SocketAddressFamily(SocketAddressFamily.netlink.rawValue),
             nl_pad: UInt16(),
             nl_pid: __u32(processID.rawValue),
             nl_groups: __u32(bitPattern: group)

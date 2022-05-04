@@ -38,7 +38,7 @@ public final class NetlinkSocket {
     ) async throws {
         // open socket
         // socket(PF_NETLINK, SOCK_RAW, netlinkProtocol.rawValue)
-        let fileDescriptor = try FileDescriptor.socket(netlinkProtocol)
+        let fileDescriptor = try SocketDescriptor(netlinkProtocol)
         // bind address
         let address = NetlinkSocketAddress(
             processID: .current,

@@ -6,6 +6,7 @@
 //
 
 import SystemPackage
+import Socket
 
 @usableFromInline
 internal protocol CSocketAddress {

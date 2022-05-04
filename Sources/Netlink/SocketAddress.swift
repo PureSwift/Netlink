@@ -7,6 +7,7 @@
 
 import Foundation
 import SystemPackage
+import Socket
 
 @frozen
 public struct NetlinkSocketAddress: Equatable, Hashable, SocketAddress {
@@ -41,7 +42,7 @@ public struct NetlinkSocketAddress: Equatable, Hashable, SocketAddress {
         var value = CInterop.NetlinkSocketAddress()
         try value.withUnsafeMutablePointer(body)
         return Self.init(
-            processID: .init(rawValue: numericCast(value.nl_pid)),
+            processID: ProcessID(rawValue: numericCast(value.nl_pid)),
             group: .init(bitPattern: value.nl_groups)
         )
     }
