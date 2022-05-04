@@ -1,7 +1,7 @@
 // swift-tools-version:5.5
 import PackageDescription
 
-let libraryType: PackageDescription.Product.Library.LibraryType = .static
+let libraryType: PackageDescription.Product.Library.LibraryType = .dynamic
 
 let package = Package(
     name: "Netlink",
