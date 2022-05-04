@@ -18,6 +18,9 @@ public extension CInterop {
     
     /// The platform process identifier.
     typealias ProcessID = pid_t
+}
+
+internal extension CInterop {
     
     /// Netlink socket address
     typealias NetlinkSocketAddress = sockaddr_nl
@@ -42,7 +45,7 @@ internal extension CInterop.NetlinkSocketAddress {
     
     static var zero: CInterop.NetlinkSocketAddress {
         .init(
-            nl_family: CInterop.SocketAddressFamily(AF_NETLINK),
+            nl_family: CInterop.SocketAddressFamily(SocketAddressFamily.netlink.rawValue),
             nl_pad: 0,
             nl_pid: 0,
             nl_groups: 0
