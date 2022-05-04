@@ -8,7 +8,7 @@
 import Foundation
 import SystemPackage
 import Socket
-import CNetlink
+@_implementationOnly import CNetlink
 
 /// Netlink Socket Protocol
 @frozen

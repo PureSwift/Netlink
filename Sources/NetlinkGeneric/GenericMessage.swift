@@ -12,7 +12,7 @@ import Darwin.C
 #endif
 
 import Foundation
-import CNetlink
+@_implementationOnly import CNetlink
 import Netlink
 
 /// Netlink generic message payload.

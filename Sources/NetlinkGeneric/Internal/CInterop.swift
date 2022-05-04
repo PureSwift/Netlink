@@ -6,7 +6,7 @@
 //
 
 import SystemPackage
-import CNetlink
+@_implementationOnly import CNetlink
 #if canImport(Glibc)
 import Glibc
 #endif

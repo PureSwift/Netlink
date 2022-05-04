@@ -13,7 +13,7 @@
 #endif
 
 import Foundation
-import CNetlink
+@_implementationOnly import CNetlink
 
 /**
  Netlink Message Type

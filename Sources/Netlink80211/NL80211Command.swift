@@ -8,7 +8,7 @@
 import Foundation
 import Netlink
 import NetlinkGeneric
-import CNetlink
+@_implementationOnly import CNetlink
 
 public extension NetlinkGenericCommand {
     

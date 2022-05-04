@@ -5,7 +5,7 @@
 //  Created by Alsey Coleman Miller on 7/7/18.
 //
 
-import CNetlink
+@_implementationOnly import CNetlink
 
 public struct NetlinkGenericCommand: RawRepresentable {
     

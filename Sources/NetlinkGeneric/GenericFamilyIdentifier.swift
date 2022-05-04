@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CNetlink
+@_implementationOnly import CNetlink
 
 /// Netlink Generic Family Identifier
 public struct NetlinkGenericFamilyIdentifier: RawRepresentable, Equatable, Hashable, Codable {

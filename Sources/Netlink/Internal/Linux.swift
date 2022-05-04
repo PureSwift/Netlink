@@ -8,7 +8,7 @@
 import Foundation
 import SystemPackage
 import Socket
-import CNetlink
+@_implementationOnly import CNetlink
 
 /* level and options for setsockopt() */
 internal var SOL_NETLINK: CInt { 270 }

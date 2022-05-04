@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CNetlink
+@_implementationOnly import CNetlink
 
 /// Netlink Message Flag
 public struct NetlinkMessageFlag: RawRepresentable, OptionSet, Equatable, Hashable, Codable {

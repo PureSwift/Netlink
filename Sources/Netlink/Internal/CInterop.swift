@@ -7,9 +7,11 @@
 
 import SystemPackage
 import Socket
-import CNetlink
+@_implementationOnly import CNetlink
 #if canImport(Glibc)
 import Glibc
+#elseif canImport(Darwin)
+import Darwin
 #endif
 
 public extension CInterop {

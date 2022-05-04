@@ -12,7 +12,7 @@ import Darwin.C
 #endif
 
 import Foundation
-import CNetlink
+@_implementationOnly import CNetlink
 
 public protocol NetlinkMessageProtocol {
     

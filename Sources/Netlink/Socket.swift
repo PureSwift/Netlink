@@ -14,7 +14,7 @@ import Darwin.C
 import Foundation
 import SystemPackage
 import Socket
-import CNetlink
+@_implementationOnly import CNetlink
 
 public final class NetlinkSocket {
     

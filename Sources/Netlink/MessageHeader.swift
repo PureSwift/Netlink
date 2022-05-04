@@ -13,7 +13,7 @@
 #endif
 
 import Foundation
-import CNetlink
+@_implementationOnly import CNetlink
 
 /*
  The Netlink message header is shown below.
