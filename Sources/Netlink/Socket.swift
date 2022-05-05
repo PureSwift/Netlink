@@ -49,11 +49,11 @@ public final class NetlinkSocket {
     // MARK: - Methods
     
     public func addMembership(to group: CInt) throws {
-        try socket.fileDescriptor.setSocketOption(NetlinkSocketOption.AddMembership(group: group))
+        try socket.setOption(NetlinkSocketOption.AddMembership(group: group))
     }
     
     public func removeMembership(from group: CInt) throws {
-        try socket.fileDescriptor.setSocketOption(NetlinkSocketOption.DropMembership(group: group))
+        try socket.setOption(NetlinkSocketOption.DropMembership(group: group))
     }
     
     public func send(_ data: Data) async throws {
