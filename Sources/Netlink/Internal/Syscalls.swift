@@ -14,3 +14,8 @@ internal func system_getpid() -> CInterop.ProcessID {
 internal func system_getppid() -> CInterop.ProcessID {
   return getppid()
 }
+
+@usableFromInline
+internal func system_getpagesize() -> CInt {
+  return getpagesize()
+}

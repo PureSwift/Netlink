@@ -5,12 +5,6 @@
 //  Created by Alsey Coleman Miller on 7/6/18.
 //
 
-#if os(Linux)
-import Glibc
-#elseif os(macOS)
-import Darwin.C
-#endif
-
 import Foundation
 import SystemPackage
 import Socket
@@ -55,29 +49,11 @@ public final class NetlinkSocket {
     // MARK: - Methods
     
     public func addMembership(to group: CInt) throws {
-        
-        var group = group
-        
-        guard withUnsafePointer(to: &group, { (pointer: UnsafePointer<CInt>) in
-            setsockopt(socket.fileDescriptor.rawValue,
-                       SOL_NETLINK,
-                       NETLINK_ADD_MEMBERSHIP,
-                       UnsafeRawPointer(pointer),
-                       socklen_t(MemoryLayout<CInt>.size))
-        }) == 0 else { throw Errno(rawValue: errno) }
+        try socket.fileDescriptor.setSocketOption(NetlinkSocketOption.AddMembership(group: group))
     }
     
     public func removeMembership(from group: CInt) throws {
-        
-        var group = group
-        
-        guard withUnsafePointer(to: &group, { (pointer: UnsafePointer<CInt>) in
-            setsockopt(socket.fileDescriptor.rawValue,
-                       SOL_NETLINK,
-                       NETLINK_DROP_MEMBERSHIP,
-                       UnsafeRawPointer(pointer),
-                       socklen_t(MemoryLayout<CInt>.size))
-        }) == 0 else { throw Errno(rawValue: errno) }
+        try socket.fileDescriptor.setSocketOption(NetlinkSocketOption.DropMembership(group: group))
     }
     
     public func send(_ data: Data) async throws {
@@ -104,8 +80,7 @@ public final class NetlinkSocket {
     
     public func recieve() async throws -> Data {
         
-        let chunkSize = Int(getpagesize())
-        
+        let chunkSize = Int(system_getpagesize())
         var readData = Data()
         var chunk = Data()
         repeat {

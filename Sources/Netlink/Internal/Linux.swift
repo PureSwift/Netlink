@@ -10,9 +10,6 @@ import SystemPackage
 import Socket
 @_implementationOnly import CNetlink
 
-/* level and options for setsockopt() */
-internal var SOL_NETLINK: CInt { 270 }
-
 #if !os(Linux)
 
 #warning("This module will only run on Linux")
@@ -20,6 +17,13 @@ internal var SOL_NETLINK: CInt { 270 }
 public var AF_NETLINK: CInt { 16 }
 public extension SocketAddressFamily {
     static var netlink: SocketAddressFamily { SocketAddressFamily(rawValue: AF_NETLINK) }
+}
+
+public var SOL_NETLINK: CInt { 270 }
+public extension SocketOptionLevel {
+    
+    @_alwaysEmitIntoClient
+    static var netlink: SocketOptionLevel { SocketOptionLevel(rawValue: SOL_NETLINK) }
 }
 
 public var NETLINK_ROUTE: CInt              { 0 }    /* Routing/device hook                */
