@@ -7,7 +7,7 @@
 
 @_implementationOnly import CNetlink
 
-public struct NetlinkGenericCommand: RawRepresentable {
+public struct NetlinkGenericCommand: RawRepresentable, Equatable, Hashable {
     
     public let rawValue: UInt8
     
@@ -17,22 +17,11 @@ public struct NetlinkGenericCommand: RawRepresentable {
     }
 }
 
-// MARK: - Equatable
-
-extension NetlinkGenericCommand: Equatable {
-    
-    public static func == (lhs: NetlinkGenericCommand, rhs: NetlinkGenericCommand) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
 // MARK: - ExpressibleByIntegerLiteral
 
 extension NetlinkGenericCommand: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: UInt8) {
-        
         self.init(rawValue: value)
     }
 }
@@ -41,7 +30,7 @@ extension NetlinkGenericCommand: ExpressibleByIntegerLiteral {
 
 public extension NetlinkGenericCommand {
     
-    static let newFamily = NetlinkGenericCommand(rawValue: UInt8(CTRL_CMD_NEWFAMILY))
+    static var newFamily: NetlinkGenericCommand { NetlinkGenericCommand(rawValue: UInt8(CTRL_CMD_NEWFAMILY)) }
     
-    static let getFamily = NetlinkGenericCommand(rawValue: UInt8(CTRL_CMD_GETFAMILY))
+    static var getFamily: NetlinkGenericCommand { NetlinkGenericCommand(rawValue: UInt8(CTRL_CMD_GETFAMILY)) }
 }
