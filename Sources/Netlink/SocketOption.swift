@@ -31,10 +31,8 @@ public struct NetlinkSocketOption: RawRepresentable, Equatable, Hashable, Socket
 
 public extension NetlinkSocketOption {
     
-    @_alwaysEmitIntoClient
     static var addMembership: NetlinkSocketOption { NetlinkSocketOption(NETLINK_ADD_MEMBERSHIP) }
     
-    @_alwaysEmitIntoClient
     static var dropMembership: NetlinkSocketOption { NetlinkSocketOption(NETLINK_DROP_MEMBERSHIP) }
 }
 
