@@ -26,23 +26,13 @@ import Foundation
  
  - SeeAlso: [Netlink Library](https://www.infradead.org/%7Etgr/libnl/doc/core.html#core_addressing)
  */
-public struct NetlinkMessageType: RawRepresentable {
+public struct NetlinkMessageType: RawRepresentable, Equatable, Hashable {
     
     public let rawValue: UInt16
     
     public init(rawValue: UInt16 = 0) {
         
         self.rawValue = rawValue
-    }
-}
-
-// MARK: - Equatable
-
-extension NetlinkMessageType: Equatable {
-    
-    public static func == (lhs: NetlinkMessageType, rhs: NetlinkMessageType) -> Bool {
-        
-        return lhs.rawValue == rhs.rawValue
     }
 }
 
