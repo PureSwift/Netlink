@@ -5,12 +5,6 @@
 //  Created by Alsey Coleman Miller on 7/6/18.
 //
 
-#if os(Linux)
-import Glibc
-#elseif os(macOS) || os(iOS)
-import Darwin.C
-#endif
-
 import Foundation
 @_implementationOnly import CNetlink
 

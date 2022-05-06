@@ -1,7 +1,7 @@
-#if canImport(Darwin)
-import Darwin
-#elseif os(Linux) || os(Android)
+#if canImport(Glibc)
 import Glibc
+#elseif canImport(Darwin)
+import Darwin
 #endif
 import SystemPackage
 

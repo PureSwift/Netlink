@@ -6,12 +6,6 @@
 //
 //
 
-#if os(Linux)
-    import Glibc
-#elseif os(macOS)
-    import Darwin.C
-#endif
-
 import Foundation
 @_implementationOnly import CNetlink
 

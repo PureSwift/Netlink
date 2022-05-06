@@ -9,6 +9,8 @@ import SystemPackage
 @_implementationOnly import CNetlink
 #if canImport(Glibc)
 import Glibc
+#elseif canImport(Darwin)
+import Darwin
 #endif
 
 public extension CInterop {
