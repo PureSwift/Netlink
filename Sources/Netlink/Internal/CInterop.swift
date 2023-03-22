@@ -20,7 +20,7 @@ public extension CInterop {
     typealias ProcessID = pid_t
 }
 
-internal extension CInterop {
+public extension CInterop {
     
     /// Netlink socket address
     typealias NetlinkSocketAddress = sockaddr_nl

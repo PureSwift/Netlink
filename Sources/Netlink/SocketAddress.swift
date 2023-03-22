@@ -26,24 +26,37 @@ public struct NetlinkSocketAddress: Equatable, Hashable, SocketAddress {
         self.group = group
     }
     
+    internal init(_ cValue: CInterop.NetlinkSocketAddress) {
+        self.init(
+            processID: ProcessID(rawValue: numericCast(cValue.nl_pid)),
+            group:  .init(bitPattern: cValue.nl_groups)
+        )
+    }
+    
     public func withUnsafePointer<Result>(
       _ body: (UnsafePointer<CInterop.SocketAddress>, UInt32) throws -> Result
     ) rethrows -> Result {
-        let address = CInterop.NetlinkSocketAddress(
+        
+        let socketAddress = CInterop.NetlinkSocketAddress(
             processID: processID,
             group: group
         )
-        return try address.withUnsafePointer(body)
+        return try socketAddress.withUnsafePointer(body)
+    }
+    
+    public static func withUnsafePointer(
+        _ pointer: UnsafeMutablePointer<CInterop.SocketAddress>
+    ) -> Self {
+        return pointer.withMemoryRebound(to: CInterop.NetlinkSocketAddress.self, capacity: 1) { pointer in
+            return Self.init(pointer.pointee)
+        }
     }
     
     public static func withUnsafePointer(
         _ body: (UnsafeMutablePointer<CInterop.SocketAddress>, UInt32) throws -> ()
     ) rethrows -> Self {
-        var value = CInterop.NetlinkSocketAddress()
-        try value.withUnsafeMutablePointer(body)
-        return Self.init(
-            processID: ProcessID(rawValue: numericCast(value.nl_pid)),
-            group: .init(bitPattern: value.nl_groups)
-        )
+        var socketAddress = CInterop.NetlinkSocketAddress()
+        try socketAddress.withUnsafeMutablePointer(body)
+        return Self.init(socketAddress)
     }
 }
