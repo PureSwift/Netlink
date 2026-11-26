@@ -8,7 +8,7 @@
 @_implementationOnly import CNetlink
 
 /// Netlink Attribute Type
-public struct NetlinkAttributeType: RawRepresentable, Equatable, Hashable, OptionSet {
+public struct NetlinkAttributeType: RawRepresentable, Equatable, Hashable, OptionSet, Sendable {
     
     public let rawValue: UInt16
     
