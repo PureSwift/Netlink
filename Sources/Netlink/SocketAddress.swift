@@ -10,7 +10,7 @@ import SystemPackage
 import Socket
 
 @frozen
-public struct NetlinkSocketAddress: Equatable, Hashable, SocketAddress {
+public struct NetlinkSocketAddress: Equatable, Hashable, Sendable, SocketAddress {
         
     public typealias ProtocolID = NetlinkSocketProtocol
     
@@ -33,17 +33,17 @@ public struct NetlinkSocketAddress: Equatable, Hashable, SocketAddress {
         )
     }
     
-    public func withUnsafePointer<Result>(
-      _ body: (UnsafePointer<CInterop.SocketAddress>, UInt32) throws -> Result
-    ) rethrows -> Result {
-        
+    public func withUnsafePointer<Result, Error>(
+      _ body: (UnsafePointer<CInterop.SocketAddress>, CInterop.SocketLength) throws(Error) -> Result
+    ) rethrows -> Result where Error: Swift.Error {
+
         let socketAddress = CInterop.NetlinkSocketAddress(
             processID: processID,
             group: group
         )
         return try socketAddress.withUnsafePointer(body)
     }
-    
+
     public static func withUnsafePointer(
         _ pointer: UnsafeMutablePointer<CInterop.SocketAddress>
     ) -> Self {
@@ -51,9 +51,9 @@ public struct NetlinkSocketAddress: Equatable, Hashable, SocketAddress {
             return Self.init(pointer.pointee)
         }
     }
-    
+
     public static func withUnsafePointer(
-        _ body: (UnsafeMutablePointer<CInterop.SocketAddress>, UInt32) throws -> ()
+        _ body: (UnsafeMutablePointer<CInterop.SocketAddress>, CInterop.SocketLength) throws -> ()
     ) rethrows -> Self {
         var socketAddress = CInterop.NetlinkSocketAddress()
         try socketAddress.withUnsafeMutablePointer(body)

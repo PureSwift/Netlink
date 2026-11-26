@@ -21,6 +21,7 @@ public final class NetlinkSocket {
     // MARK: - Initialization
     
     deinit {
+        let socket = self.socket
         Task(priority: .high) {
             await socket.close()
         }
@@ -38,7 +39,7 @@ public final class NetlinkSocket {
             processID: .current,
             group: group
         )
-        try fileDescriptor.closeIfThrows {
+        try fileDescriptor.closeIfThrows { () throws(Errno) in
             try fileDescriptor.bind(address)
         }
         // initialize socket

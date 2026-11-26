@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:6.4
 import PackageDescription
 import class Foundation.ProcessInfo
 
@@ -9,10 +9,10 @@ let libraryType: PackageDescription.Product.Library.LibraryType? = dynamicLibrar
 var package = Package(
     name: "Netlink",
     platforms: [
-        .macOS(.v10_15),
-        .iOS(.v13),
-        .watchOS(.v6),
-        .tvOS(.v13),
+        .macOS(.v13),
+        .iOS(.v16),
+        .watchOS(.v9),
+        .tvOS(.v16),
     ],
     products: [
         .library(
@@ -85,12 +85,10 @@ var package = Package(
     ]
 )
 
-// SwiftPM command plugins are only supported by Swift version 5.6 and later.
-#if swift(>=5.6)
+// Documentation generation
 let buildDocs = ProcessInfo.processInfo.environment["BUILDING_FOR_DOCUMENTATION_GENERATION"] != nil
 if buildDocs {
     package.dependencies += [
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     ]
 }
-#endif

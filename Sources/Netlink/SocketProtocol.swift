@@ -12,7 +12,7 @@ import Socket
 
 /// Netlink Socket Protocol
 @frozen
-public struct NetlinkSocketProtocol: RawRepresentable, Equatable, Hashable {
+public struct NetlinkSocketProtocol: RawRepresentable, Equatable, Hashable, Sendable {
     
     public let rawValue: Int32
     

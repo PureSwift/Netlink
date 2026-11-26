@@ -6,7 +6,7 @@
 //
 //
 
-public struct NetlinkGenericVersion: RawRepresentable {
+public struct NetlinkGenericVersion: RawRepresentable, Sendable {
     
     public let rawValue: UInt8
     

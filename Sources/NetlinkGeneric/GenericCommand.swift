@@ -7,7 +7,7 @@
 
 @_implementationOnly import CNetlink
 
-public struct NetlinkGenericCommand: RawRepresentable, Equatable, Hashable {
+public struct NetlinkGenericCommand: RawRepresentable, Equatable, Hashable, Sendable {
     
     public let rawValue: UInt8
     
