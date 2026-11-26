@@ -39,47 +39,47 @@ public extension NetlinkSocketOption {
 public extension NetlinkSocketOption {
     
     struct AddMembership: SocketOption {
-        
+
         @_alwaysEmitIntoClient
         public static var id: NetlinkSocketOption { .addMembership }
-        
+
         public var group: CInt
-        
+
         public init(group: CInt) {
             self.group = group
         }
-        
-        public func withUnsafeBytes<Result>(_ pointer: ((UnsafeRawBufferPointer) throws -> (Result))) rethrows -> Result {
+
+        public func withUnsafeBytes<Result, Error>(_ pointer: ((UnsafeRawBufferPointer) throws(Error) -> (Result))) rethrows -> Result where Error: Swift.Error {
             return try Swift.withUnsafeBytes(of: group) { bufferPointer in
                 try pointer(bufferPointer)
             }
         }
-        
-        public static func withUnsafeBytes(_ body: (UnsafeMutableRawBufferPointer) throws -> ()) rethrows -> Self {
+
+        public static func withUnsafeBytes<Error>(_ body: (UnsafeMutableRawBufferPointer) throws(Error) -> ()) rethrows -> Self where Error: Swift.Error {
             var value: CInt = 0
             try Swift.withUnsafeMutableBytes(of: &value, body)
             return self.init(group: value)
         }
     }
-    
+
     struct DropMembership: SocketOption {
-        
+
         @_alwaysEmitIntoClient
         public static var id: NetlinkSocketOption { .dropMembership }
-        
+
         public var group: CInt
-        
+
         public init(group: CInt) {
             self.group = group
         }
-        
-        public func withUnsafeBytes<Result>(_ pointer: ((UnsafeRawBufferPointer) throws -> (Result))) rethrows -> Result {
+
+        public func withUnsafeBytes<Result, Error>(_ pointer: ((UnsafeRawBufferPointer) throws(Error) -> (Result))) rethrows -> Result where Error: Swift.Error {
             return try Swift.withUnsafeBytes(of: group) { bufferPointer in
                 try pointer(bufferPointer)
             }
         }
-        
-        public static func withUnsafeBytes(_ body: (UnsafeMutableRawBufferPointer) throws -> ()) rethrows -> Self {
+
+        public static func withUnsafeBytes<Error>(_ body: (UnsafeMutableRawBufferPointer) throws(Error) -> ()) rethrows -> Self where Error: Swift.Error {
             var value: CInt = 0
             try Swift.withUnsafeMutableBytes(of: &value, body)
             return self.init(group: value)
