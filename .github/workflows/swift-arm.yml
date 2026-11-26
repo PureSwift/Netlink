@@ -1,24 +1,35 @@
 name: Swift ARM
-on: [push]
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
 jobs:
 
     linux-armv7-crosscompile-build:
         name: Crosscompile for Linux Armv7
         runs-on: ubuntu-latest
-        container: colemancda/swift-armv7:latest-prebuilt
         steps:
         - name: Checkout
           uses: actions/checkout@v4
+        # The SDK must match the host Swift toolchain version exactly.
+        - uses: SwiftyLab/setup-swift@latest
+          with:
+            swift-version: "6.4.2"
+        - name: Install armhf SDK
+          uses: swift-embedded-linux/armhf-action@main
+          id: armhf-sdk
+          with:
+            swift-version: 6.4.2
+            distribution: debian-bookworm
+            arch: armv7
         - name: Swift Version
           run: swift --version
         - name: Build (Release)
-          run: |
-            cd $SRC_ROOT
-            export SWIFT_PACKAGE_SRCDIR=$GITHUB_WORKSPACE
-            export SWIFT_PACKAGE_BUILDDIR=$SWIFT_PACKAGE_SRCDIR/.build
-            $SRC_ROOT/build-swift-package.sh
+          run: swift build -c release --build-system native --destination ${{ steps.armhf-sdk.outputs.destination_json }}
         - name: Archive Build artifacts
           uses: actions/upload-artifact@v4
           with:
-            name: linux-armv7-crosscompile-test
-            path: .build/*/*.xctest
+            name: linux-armv7-crosscompile-build
+            path: .build/armv7-unknown-linux-gnueabihf/release/
