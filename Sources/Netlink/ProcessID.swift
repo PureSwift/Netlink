@@ -10,7 +10,7 @@ import SystemPackage
 
 /// POSIX Process ID
 @frozen
-public struct ProcessID: RawRepresentable, Equatable, Hashable, Codable {
+public struct ProcessID: RawRepresentable, Equatable, Hashable, Codable, Sendable {
     
     /// The raw C process ID.
     @_alwaysEmitIntoClient
