@@ -5,7 +5,7 @@
 //  Created by Alsey Coleman Miller on 7/7/18.
 //
 
-public struct NetlinkGenericMulticastGroupName: RawRepresentable, Equatable, Hashable, Codable {
+public struct NetlinkGenericMulticastGroupName: RawRepresentable, Equatable, Hashable, Codable, Sendable {
     
     public let rawValue: String
     
