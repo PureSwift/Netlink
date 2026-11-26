@@ -54,8 +54,7 @@ internal extension CInterop.NetlinkSocketAddress {
 }
 
 extension CInterop.NetlinkSocketAddress: CSocketAddress {
-    
-    @usableFromInline
+
     static var family: SocketAddressFamily { .netlink }
 }
 
