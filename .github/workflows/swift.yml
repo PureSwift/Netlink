@@ -1,17 +1,25 @@
 name: Swift
-on: [push]
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
 jobs:
 
   macos:
     name: macOS
-    runs-on: macos-latest
+    runs-on: macos-26
     steps:
-    - name: Install Swift
-      uses: slashmo/install-swift@v0.3.0
-      with:
-        version: 5.7.3
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
+    # Xcode provides the macOS SDK; the Swift 6.4 toolchain comes from swift.org.
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+    - uses: SwiftyLab/setup-swift@latest
+      with:
+        swift-version: "6.4.2"
     - name: Swift Version
       run: swift --version
     - name: Build (Debug)
@@ -20,20 +28,22 @@ jobs:
       run: swift build -c release
     - name: Test (Debug)
       run: swift test -c debug
-  
+
   linux:
-    name: Linux
+    name: Linux (${{ matrix.arch }})
     strategy:
+      fail-fast: false
       matrix:
-        swift: [5.7.3]
-    runs-on: ubuntu-20.04
+        include:
+          - arch: x86_64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    container: swift:6.4-noble
     steps:
-    - name: Install Swift
-      uses: slashmo/install-swift@v0.3.0
-      with:
-        version: ${{ matrix.swift }}
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Swift Version
       run: swift --version
     - name: Build (Debug)
