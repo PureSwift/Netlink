@@ -12,6 +12,7 @@ import SystemPackage
 #endif
 import Socket
 #if canImport(System)
+// Socket's CInterop extensions are defined on the package type.
 import SystemPackage
 public typealias CInterop = SystemPackage.CInterop
 #endif
@@ -44,7 +45,7 @@ internal extension CInterop.NetlinkSocketAddress {
         group: CInt = 0
     ) {
         self.init(
-            nl_family: CInterop.SocketAddressFamily(SocketAddressFamily.netlink.rawValue),
+            nl_family: UInt16(SocketAddressFamily.netlink.rawValue),
             nl_pad: UInt16(),
             nl_pid: __u32(processID.rawValue),
             nl_groups: __u32(bitPattern: group)
@@ -53,7 +54,7 @@ internal extension CInterop.NetlinkSocketAddress {
     
     static var zero: CInterop.NetlinkSocketAddress {
         .init(
-            nl_family: CInterop.SocketAddressFamily(SocketAddressFamily.netlink.rawValue),
+            nl_family: UInt16(SocketAddressFamily.netlink.rawValue),
             nl_pad: 0,
             nl_pid: 0,
             nl_groups: 0
