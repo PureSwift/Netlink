@@ -5,7 +5,11 @@
 //  Created by Alsey Coleman Miller on 7/29/18.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 #if canImport(System)
 import System
 #else
@@ -110,7 +114,7 @@ public var NLA_F_NET_BYTEORDER: CInt        { (1 << 14) }
 
 public struct sockaddr_nl {
 
-    public var nl_family: CInterop.SocketAddressFamily = 0 /* AF_NETLINK    */
+    public var nl_family: UInt16 = 0 /* AF_NETLINK    */
 
     public var nl_pad: UInt16 = 0 /* zero        */
 
