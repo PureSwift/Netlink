@@ -6,11 +6,15 @@
 //  Copyright © 2015 PureSwift. All rights reserved.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
-internal extension size_t {
+internal extension Int {
     
-    var extendTo4Bytes: size_t {
+    var extendTo4Bytes: Int {
         
         return self + ((4 - (self & 3)) & 3);
     }
