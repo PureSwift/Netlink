@@ -5,7 +5,11 @@
 //  Created by Alsey Coleman Miller on 7/28/18.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 /// Netlink Attribute Encoder
 public struct NetlinkAttributeEncoder {

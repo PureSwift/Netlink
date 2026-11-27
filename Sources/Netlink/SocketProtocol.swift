@@ -5,7 +5,11 @@
 //  Created by Alsey Coleman Miller on 7/6/18.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 #if canImport(System)
 import System
 #else

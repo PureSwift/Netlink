@@ -5,7 +5,11 @@
 //  Created by Alsey Coleman Miller on 8/10/18.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import XCTest
 import CNetlink
 @testable import Netlink

@@ -6,7 +6,11 @@
 //
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 @_implementationOnly import CNetlink
 
 /**

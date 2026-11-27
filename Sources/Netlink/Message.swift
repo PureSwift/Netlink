@@ -5,7 +5,20 @@
 //  Created by Alsey Coleman Miller on 7/6/18.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
+#if canImport(Glibc)
+import Glibc
+#elseif canImport(Darwin)
+import Darwin
+#elseif canImport(Musl)
+import Musl
+#elseif canImport(Bionic)
+import Bionic
+#endif
 @_implementationOnly import CNetlink
 
 public protocol NetlinkMessageProtocol {

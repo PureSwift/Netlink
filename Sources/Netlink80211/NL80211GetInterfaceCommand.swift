@@ -5,7 +5,11 @@
 //  Created by Alsey Coleman Miller on 4/23/22.
 //
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 import Netlink
 import NetlinkGeneric
 
