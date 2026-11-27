@@ -6,7 +6,11 @@
 //
 
 import Foundation
+#if canImport(System)
+import System
+#else
 import SystemPackage
+#endif
 import Socket
 @_implementationOnly import CNetlink
 
@@ -39,7 +43,7 @@ public final class NetlinkSocket {
             processID: .current,
             group: group
         )
-        try fileDescriptor.closeIfThrows { () throws(Errno) in
+        try fileDescriptor.closeIfThrows { () throws(SystemPackage.Errno) in
             try fileDescriptor.bind(address)
         }
         // initialize socket
