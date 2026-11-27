@@ -5,8 +5,16 @@
 //  Created by Alsey Coleman Miller on 4/22/22.
 //
 
+#if canImport(System)
+import System
+#else
 import SystemPackage
+#endif
 import Socket
+#if canImport(System)
+import SystemPackage
+public typealias CInterop = SystemPackage.CInterop
+#endif
 @_implementationOnly import CNetlink
 #if canImport(Glibc)
 import Glibc
