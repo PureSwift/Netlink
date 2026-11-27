@@ -5,7 +5,11 @@
 //  Created by Alsey Coleman Miller on 4/22/22.
 //
 
+#if canImport(System)
+import System
+#else
 import SystemPackage
+#endif
 import Socket
 
 internal protocol CSocketAddress {

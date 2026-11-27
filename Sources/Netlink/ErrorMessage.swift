@@ -6,7 +6,11 @@
 //
 
 import Foundation
+#if canImport(System)
+import System
+#else
 import SystemPackage
+#endif
 
 /// Netlink generic message payload.
 public struct NetlinkErrorMessage: Error, NetlinkMessageProtocol {
